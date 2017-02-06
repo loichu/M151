@@ -1,5 +1,16 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startuperrors', 1);
+error_reporting(E_ALL);
+
 require_once 'htmlToPhp.inc.php';
+require_once 'fonctionsDB.inc.php';
+
+$htmlTools = new htmllTools();
+$myDB = new DB();
+
+$activites = $myDB->getActivites();
+$classes = $myDB->getClasses();
 ?>
 
 <!DOCTYPE html"
@@ -14,7 +25,7 @@ require_once 'htmlToPhp.inc.php';
       
       <h2>Inscription à la journée sportive du CFPT</h2>
       
-      <form class="form-horizontal" method="post" action="confirmation.php">
+      <form class="form-horizontal" role="form" method="post" action="confirmation.php">
           
         <div class="form-group">
             <label for="nom" class="col-lg-2 control-label">Nom: </label>
@@ -33,54 +44,33 @@ require_once 'htmlToPhp.inc.php';
         <div class="form-group">
             <label for="classe" class="col-lg-2 control-label">Classe: </label>
             <div class="col-lg-10">
-                <select class="form-control" id="classe" name="classe">
-                  <option>Classe 1</option>
-                  <option>Classe 2</option>
-                  <option>Classe 3</option>
-                </select>
+                <?php $htmlTools->afficherSelect("classe", $classes);?>
             </div>
         </div>
 
         <hr>
         
-        <?php
-        afficherSelectActivites("premier");
-        afficherSelectActivites("deuxième");
-        afficherSelectActivites("troisième");
-        ?>
-        <!--
-        <div class="form-group">
-            <label for="choix1" class="col-lg-2 control-label">Premier choix: </label>
-            <div class="col-lg-10">
-                <select class="form-control" id="choix1" name="choix1">
-                    <option selected="selected">Accrobranche</option>
-                    <option>Vélo</option>
-                    <option>Football</option>
-                </select>
+        <div class='form-group'>
+            <label for="premier" class='col-lg-2 control-label'>Premier choix: </label>
+            <div class='col-lg-10'>
+                <?php $htmlTools->afficherSelect("premier", $activites); ?>
             </div>
         </div>
         
-        <div class="form-group">
-            <label for="choix2" class="col-lg-2 control-label">Deuxième choix:</label>
-            <div class="col-lg-10">
-                <select class="form-control" id="choix2" name="choix2">
-                    <option>Accrobranche</option>
-                    <option selected="selected">Vélo</option>
-                    <option>Football</option>
-                </select>
+        <div class='form-group'>
+            <label for="deuxième" class='col-lg-2 control-label'>Deuxième choix: </label>
+            <div class='col-lg-10'>
+                <?php $htmlTools->afficherSelect("deuxième", $activites); ?>
             </div>
         </div>
         
-        <div class="form-group">
-            <label for="choix3" class="col-lg-2 control-label">Troisième choix:</label>
-            <div class="col-lg-10">
-                <select class="form-control" id="choix3" name="choix3">
-                    <option>Accrobranche</option>
-                    <option>Vélo</option>
-                    <option selected="selected">Football</option>
-                </select>
+        <div class='form-group'>
+            <label for="troisième" class='col-lg-2 control-label'>Troisième choix: </label>
+            <div class='col-lg-10'>
+                <?php $htmlTools->afficherSelect("troisième", $activites); ?>
             </div>
-        </div>-->
+        </div>        
+        
       
         <div class="col-lg-10 col-lg-offset-2">
             <button type="submit" class="btn btn-primary">Confirmer</button>
