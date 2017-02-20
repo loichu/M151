@@ -9,11 +9,11 @@ require_once 'fonctionsDB.inc.php';
 $htmlTools = new htmllTools();
 $myDB = new DB();
 
-$activites = $myDB->getActivites();
-$classes = $myDB->getClasses();
+$activites = $myDB->listActivites();
+$classes = $myDB->listClasses();
 ?>
 
-<!DOCTYPE html"
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="utf-8">
