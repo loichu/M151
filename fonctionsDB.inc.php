@@ -87,21 +87,79 @@ class DB {
     
     function update($id, $type, $data)
     {
-        $fieldName = "nom" . ucfirst($type);
-        $fieldID = "id" . ucfirst($type);
+       
+        if($type=="classe"){
+            $req = $this->bdd->prepare("UPDATE classe SET nomClasse = :newName WHERE idClasse = :id");
+        } else {
+            $req = $this->bdd->prepare("UPDATE activite SET nomActivite = :newName WHERE idActivite = :id");
+        }
         
-        $req = $this->bdd->prepare("UPDATE (:type) SET (:fieldName) = (:newName) WHERE (:fieldID) = (:id)");
-        $req->bindParam(':type', $type);
-        $req->bindParam(':fieldName', $fieldName);
         $req->bindParam(':newName', $data['newName']);
-        $req->bindParam(':fieldID', $fieldID);
         $req->bindParam(':id', $id);
         
         try{
             $req->execute();
             $_SESSION['message'] = "La $type a été modifiée avec succès !";
         } catch (Exception $ex) {
-            $_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
+            $_SESSION['error'] = "Une erreur s'est produite lors de la modification de la $type ($ex)";
         }
+    }
+    
+    function remove($id, $type)
+    {
+        if($type=="classe"){
+            $req = $this->bdd->prepare("DELETE FROM classe WHERE idClasse = :id");
+        } else {
+            $req = $this->bdd->prepare("DELETE FROM activite WHERE idActivite = :id");
+        }
+        
+        $req->bindParam(':id', $id);
+        
+        try{
+            $req->execute();
+            $_SESSION['message'] = "La $type a été supprimé avec succès !";
+        } catch (Exception $ex) {
+            $_SESSION['error'] = "Une erreur s'est produite lors de la suppression de la $type ($ex)";
+        }
+    }
+    
+    function subscribe($name, $firstName, $classe, $choices){
+        
+        $addEleveReq = $this->bdd->prepare("INSERT INTO eleve (nom, prenom, fkClasse) VALUES (:name, :firstName, :classe)");
+        $addEleveReq->bindParam(":name", $name);
+        $addEleveReq->bindParam(":firstName", $firstName);
+        $addEleveReq->bindParam(":classe", $classe);
+        
+        $_SESSION = array();
+        
+        try {
+            $addEleveReq->execute();
+            $_SESSION['message']['classe'] = "L'utilisateur a été enregistré";
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            $_SESSION['error']['classe'] = "utilisateur pas enregistré" . $exc;
+        }
+        
+        $lastInsertId = $this->bdd->lastInsertId();
+        
+        foreach ($choices as $id => $choice)
+        {
+            $req = "addChoice" . $id;
+            
+            $$req = $this->bdd->prepare("INSERT INTO eleve_activite (fkEleve, fkActivite, ordrePref) VALUES (:eleve, :activite, :ordre)");
+            $$req->bindParam(":eleve", $lastInsertId);
+            $$req->bindParam(":activite", $choice);
+            $$req->bindParam(":ordre", $id);
+            
+            try {
+                $$req->execute();
+                $_SESSION['message']["activite$id"] = "L'activité $id a été enregistrée";
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+                $_SESSION['error']["activite$id"] = "L'activité $id pas enregistré" . $exc;
+            }
+        }
+        
+        
     }
 }

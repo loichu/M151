@@ -11,6 +11,15 @@ $myDB = new DB();
 
 $activites = $myDB->listActivites();
 $classes = $myDB->listClasses();
+
+if(!empty($_POST))
+{
+    $name = $_POST['nom'];
+    $firstName = $_POST['prenom'];
+    $classe = $_POST['classe'];
+    $choices = [$_POST['premier'], $_POST['deuxième'], $_POST['troisième']];
+    var_dump($choices);
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +53,7 @@ $classes = $myDB->listClasses();
         <div class="form-group">
             <label for="classe" class="col-lg-2 control-label">Classe: </label>
             <div class="col-lg-10">
-                <?php $htmlTools->afficherSelect("classe", $classes);?>
+                <?php $htmlTools->afficherSelect("classe", $classes, "classe");?>
             </div>
         </div>
 
@@ -53,21 +62,21 @@ $classes = $myDB->listClasses();
         <div class='form-group'>
             <label for="premier" class='col-lg-2 control-label'>Premier choix: </label>
             <div class='col-lg-10'>
-                <?php $htmlTools->afficherSelect("premier", $activites); ?>
+                <?php $htmlTools->afficherSelect("premier", $activites, "activite"); ?>
             </div>
         </div>
         
         <div class='form-group'>
             <label for="deuxième" class='col-lg-2 control-label'>Deuxième choix: </label>
             <div class='col-lg-10'>
-                <?php $htmlTools->afficherSelect("deuxième", $activites); ?>
+                <?php $htmlTools->afficherSelect("deuxième", $activites, "activite"); ?>
             </div>
         </div>
         
         <div class='form-group'>
             <label for="troisième" class='col-lg-2 control-label'>Troisième choix: </label>
             <div class='col-lg-10'>
-                <?php $htmlTools->afficherSelect("troisième", $activites); ?>
+                <?php $htmlTools->afficherSelect("troisième", $activites, "activite"); ?>
             </div>
         </div>        
         

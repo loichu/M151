@@ -22,9 +22,19 @@ if(!empty($_POST['nomActivite']))
 
 if(!empty($_POST['newName']))
 {
+    $data = $_POST;
     $id = $_POST['id'];
     $type = $_POST['type'];
-    $DB->update($id, $type, $_POST);
+    $DB->update($id, $type, $data);
+    header("location:administration.php");
+}
+
+if(!empty($_GET['id']))
+{
+    $id = $_GET['id'];
+    $type = $_GET['type'];
+    $DB->remove($id, $type);
+    header("location:administration.php");
 }
 ?>
 
@@ -40,12 +50,12 @@ if(!empty($_POST['newName']))
     <body>
         <div class="col-md-12">
             <?php
-            if(!empty($_SESSION['error'])){
+            if(!empty($_SESSION['error']) && empty($_POST) && empty($_GET)){
                 echo $_SESSION['error'];
                 $_SESSION['error'] = "";
             }
            
-            if(!empty($_SESSION['message'])){
+            if(!empty($_SESSION['message']) && empty($_POST) && empty($_GET)){
                 echo $_SESSION['message'];
                 $_SESSION['message'] = "";
             }
@@ -66,7 +76,8 @@ if(!empty($_POST['newName']))
                 {
                     echo "<tr>";
                     echo "<td width='200'>$classe[nomClasse]</td>";
-                    echo "<td width='40'><a href='update.php?type=classe&id=" . $classe['idClasse'] . "'>Modifier</a></td>";
+                    echo "<td width='80'><a href='update.php?type=classe&id=" . $classe['idClasse'] . "'>Modifier</a></td>";
+                    echo "<td width='40'><a href=?type=classe&id=" . $classe['idClasse'] . "'>Supprimer</a></td>";
                     echo "</tr>";
                 }
                 ?>
@@ -87,7 +98,8 @@ if(!empty($_POST['newName']))
                 {
                     echo "<tr>";
                     echo "<td width='200'>$activite[nomActivite]</td>";
-                    echo "<td width='40'><a href='update.php?type=activite&id=" . $activite['idActivite'] . "'>Modifier</a></td>";
+                    echo "<td width='80'><a href='update.php?type=activite&id=" . $activite['idActivite'] . "'>Modifier</a></td>";
+                    echo "<td width='40'><a href=?type=activite&id=" . $activite['idActivite'] . "'>Supprimer</a></td>";
                     echo "</tr>";
                 }
                 ?>
