@@ -1,9 +1,9 @@
 <?php
 class DB {
     private $host = "localhost";
-    private $username = "m151";
+    private $username = "m151new";
     private $password = "12345";
-    private $DB_name = "journeesportive";
+    private $DB_name = "journeesportivenew";
     
     public $bdd;
     
@@ -132,6 +132,8 @@ class DB {
         
         $_SESSION = array();
         
+        $_SESSION['debug']['params'] = [$name, $firstName, $classe, $choices]; 
+        
         try {
             $addEleveReq->execute();
             $_SESSION['message']['classe'] = "L'utilisateur a été enregistré";
@@ -141,10 +143,13 @@ class DB {
         }
         
         $lastInsertId = $this->bdd->lastInsertId();
+        $_SESSION['debug']['lastInsertId'] = $lastInsertId;        
         
         foreach ($choices as $id => $choice)
         {
-            $req = "addChoice" . $id;
+            $req = "addChoice" . "$id";
+            
+            $_SESSION['debug']['foreach'] = [$id, $choice]; 
             
             $$req = $this->bdd->prepare("INSERT INTO eleve_activite (fkEleve, fkActivite, ordrePref) VALUES (:eleve, :activite, :ordre)");
             $$req->bindParam(":eleve", $lastInsertId);
@@ -159,7 +164,16 @@ class DB {
                 $_SESSION['error']["activite$id"] = "L'activité $id pas enregistré" . $exc;
             }
         }
-        
-        
+    }
+    
+    function checkLogin($username, $password)
+    {
+        // Check user and password at once
+        $req = $this->bdd->prepare("SELECT username FROM user WHERE username = (:username) AND password = (:password)");
+        $req->bindParam(":username", $username);
+        $req->bindParam(":password", $password);
+        $req->execute();
+        $isCorrect = $req->fetchAll(PDO::FETCH_ASSOC);
+        return isCorrect;
     }
 }

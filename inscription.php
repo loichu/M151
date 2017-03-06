@@ -3,6 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startuperrors', 1);
 error_reporting(E_ALL);
 
+session_start();
+
 require_once 'htmlToPhp.inc.php';
 require_once 'fonctionsDB.inc.php';
 
@@ -12,14 +14,17 @@ $myDB = new DB();
 $activites = $myDB->listActivites();
 $classes = $myDB->listClasses();
 
-if(!empty($_POST))
-{
-    $name = $_POST['nom'];
-    $firstName = $_POST['prenom'];
-    $classe = $_POST['classe'];
-    $choices = [$_POST['premier'], $_POST['deuxième'], $_POST['troisième']];
-    var_dump($choices);
+if(!empty($_SESSION['error']['identical records'])){
+    echo $_SESSION['error']['identical records'];
+    unset($_SESSION['error']['identical records']);
 }
+
+if(!empty($_SESSION['error']['no name'])){
+    echo $_SESSION['error']['no name'];
+    unset($_SESSION['error']['no name']);
+}
+    
+    
 ?>
 
 <!DOCTYPE html>
