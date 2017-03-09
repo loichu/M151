@@ -67,8 +67,10 @@ class DB {
         try{
             $req->execute();
             $_SESSION['message'] = "La classe a été ajoutée avec succès !";
+            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomClasse']);
         } catch (Exception $ex) {
             $_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la classe ($ex)";
+            return array("error" => "error");
         }
     }
     
@@ -118,8 +120,10 @@ class DB {
         try{
             $req->execute();
             $_SESSION['message'] = "La $type a été supprimé avec succès !";
+            return array('id' => $id, 'data' => $type);
         } catch (Exception $ex) {
             $_SESSION['error'] = "Une erreur s'est produite lors de la suppression de la $type ($ex)";
+            return array("error" => $ex->getCode());
         }
     }
     
