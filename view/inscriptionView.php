@@ -43,21 +43,21 @@ if(!empty($_SESSION['error']['no name'])){
           
         <div class="form-group">
             <label for="nom" class="col-lg-2 control-label">Nom: </label>
-            <div class="col-lg-10">
-                <input type="text" name="nom" />
+            <div class="col-lg-4">
+                <input type="text" name="nom" class="form-control" />
             </div>
         </div>
           
         <div class="form-group">
             <label for="prenom" class="col-lg-2 control-label">Prénom: </label>
-            <div class="col-lg-10">
-                <input type="text" name="prenom" />
+            <div class="col-lg-4">
+                <input type="text" name="prenom" class="form-control" />
             </div>
         </div>
           
         <div class="form-group">
             <label for="classe" class="col-lg-2 control-label">Classe: </label>
-            <div class="col-lg-10">
+            <div class="col-lg-4">
                 <?php $htmlTools->afficherSelect("classe", $classes, "classe");?>
             </div>
         </div>
@@ -66,21 +66,21 @@ if(!empty($_SESSION['error']['no name'])){
         
         <div class='form-group'>
             <label for="premier" class='col-lg-2 control-label'>Premier choix: </label>
-            <div class='col-lg-10'>
+            <div class='col-lg-4'>
                 <?php $htmlTools->afficherSelect("premier", $activites, "activite"); ?>
             </div>
         </div>
         
         <div class='form-group'>
             <label for="deuxième" class='col-lg-2 control-label'>Deuxième choix: </label>
-            <div class='col-lg-10'>
+            <div class='col-lg-4'>
                 <?php $htmlTools->afficherSelect("deuxième", $activites, "activite"); ?>
             </div>
         </div>
         
         <div class='form-group'>
             <label for="troisième" class='col-lg-2 control-label'>Troisième choix: </label>
-            <div class='col-lg-10'>
+            <div class='col-lg-4'>
                 <?php $htmlTools->afficherSelect("troisième", $activites, "activite"); ?>
             </div>
         </div>        

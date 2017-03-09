@@ -1,9 +1,9 @@
 <?php
 class DB {
     private $host = "localhost";
-    private $username = "m151new";
+    private $username = "m151";
     private $password = "12345";
-    private $DB_name = "journeesportivenew";
+    private $DB_name = "journeesportive";
     
     public $bdd;
     
@@ -13,7 +13,7 @@ class DB {
             $bdd = new PDO("mysql:host={$this->host};dbname={$this->DB_name};charset=utf8", $this->username, $this->password);
             $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->bdd = $bdd;
-            echo "Connected successfully";
+            //echo "Connected successfully";
         } catch (PDOException $e) {
             echo 'Connection failed : ' . $e->getMessage();
         }
@@ -151,7 +151,7 @@ class DB {
             
             $_SESSION['debug']['foreach'] = [$id, $choice]; 
             
-            $$req = $this->bdd->prepare("INSERT INTO eleve_activite (fkEleve, fkActivite, ordrePref) VALUES (:eleve, :activite, :ordre)");
+            $$req = $this->bdd->prepare("INSERT INTO inscrire (fkEleve, fkActivite, ordrePref) VALUES (:eleve, :activite, :ordre)");
             $$req->bindParam(":eleve", $lastInsertId);
             $$req->bindParam(":activite", $choice);
             $$req->bindParam(":ordre", $id);
