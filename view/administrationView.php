@@ -1,7 +1,9 @@
 <?php
 session_start();
 
-require_once 'fonctionsDB.inc.php';
+// todo: the model should not be required
+require_once './model/fonctionsDB.inc.php';
+require_once 'helpers/phpToHtml.inc.php';
 
 $DB = new DB();
 
@@ -74,9 +76,10 @@ if (!empty($_GET['id'])) {
                 <?php
                 foreach ($classes as $classe) {
                     echo "<tr>";
-                    echo "<td width='200'>$classe[nomClasse]</td>";
+                    HtmllTools::addRowInTable($classe['nomClasse'], $classe['idClasse'], "classe");
+                    /*echo "<td width='200'>$classe[nomClasse]</td>";
                     echo "<td width='80'><a href='update.php?type=classe&id=" . $classe['idClasse'] . "'>Modifier</a></td>";
-                    echo "<td width='40'><a href='#' class='rmElement' data-type='classe' data-id='" . $classe['idClasse'] . "'>Supprimer</a></td>";
+                    echo "<td width='40'><a href='#' class='rmElement' data-type='classe' data-id='" . $classe['idClasse'] . "'>Supprimer</a></td>";*/
                     echo "</tr>";
                 }
                 ?>
@@ -84,7 +87,7 @@ if (!empty($_GET['id'])) {
             
             <div id="formClasse">
                 <input type ="text" name="nomClasse" id="nomClasse" placeholder="Nom de la classe"/>
-                <input type="button" id="submitClasse" value='Ajouter' />
+                <input type="button" class="submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse" value='Ajouter' />
             </div>
        
         </div>
@@ -92,22 +95,23 @@ if (!empty($_GET['id'])) {
         <div class="col-md-6">
             <h2>Insérer une nouvelle activité</h2>
 
-            <table>
+            <table id="tableActivite">
                 <?php
                 foreach ($activites as $activite) {
                     echo "<tr>";
-                    echo "<td width='200'>$activite[nomActivite]</td>";
+                    HtmllTools::addRowInTable($activite['nomActivite'], $activite['idActivite'], "activite");
+                    /*echo "<td width='200'>$activite[nomActivite]</td>";
                     echo "<td width='80'><a href='update.php?type=activite&id=" . $activite['idActivite'] . "'>Modifier</a></td>";
-                    echo "<td width='40'><a href=?type=activite&id=" . $activite['idActivite'] . "'>Supprimer</a></td>";
+                    echo "<td width='40'><a href=?type=activite&id=" . $activite['idActivite'] . "'>Supprimer</a></td>";*/
                     echo "</tr>";
                 }
                 ?>
             </table>
 
-            <form method="post">
-                <input type ="text" name="nomActivite" placeholder="Nom de l'activité"/>
-                <input type='submit' value="Ajouter" />
-            </form>
+            <div id="formActivite">
+                <input type ="text" name="nomActivite" id="nomActivite" placeholder="Nom de l'activité"/>
+                <input type='button' class="submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite" value="Ajouter" />
+            </div>
         </div>
 
         <pre>
@@ -118,8 +122,38 @@ if (!empty($_GET['id'])) {
         Jquery
         -->
         <script>
-            $(".rmElement").click(function (e) {
-                e.preventDefault();
+            $(".submitElement").click(function () {
+                var type = $(this).data('type');
+                var table = $(this).data('table');
+                var field = $(this).data('field');
+                var inputValue = $("#"+field).val();
+                
+                $.ajax({
+                    method: "POST",
+                    url: "api/add/"+type,
+                    data: {nomElement: inputValue}
+                })
+                .done(function (returnedDatas) {
+                    var myData = JSON.parse(returnedDatas);
+                    if(myData.error){
+                        alert("Something went wrong");
+                    } else {
+                        //alert("Data Saved: id:" + myData.id + " data: " + myData.data);
+                        $("#"+field).val("");
+                        $("#"+table).append("<tr><td>" + myData.data + "</td>" + 
+                                "<td><a href='#' class='rmElement' data-type='"+type+"' data-id='" + myData.id + "'>Modifier</a></td>" +
+                                "<td><a href='#"+ myData.id +"' class='rmElement' data-type='"+type+"' data-id='" + myData.id + "'>Supprimer</a></td></tr>");
+                    }
+                    
+                })
+                .fail(function () {
+                    alert("Something went wrong");
+                });
+            });
+            
+            $("#tableClasse, #tableActivite").on('click', 'a.rmElement', function (e) {
+                console.log("delete clicked");
+                //e.preventDefault();
                 var closestTr = $(this).closest("tr");
                 var id = $(this).data('id');
                 var type = $(this).data('type');
@@ -140,7 +174,10 @@ if (!empty($_GET['id'])) {
                         }
                     } else {
                         console.log(closestTr);
-                        closestTr.remove();
+                        closestTr.css('background-color', '#FF3030');
+                        closestTr.fadeOut("fast", function() {
+                            closestTr.remove();
+                        })
                     }
                     
                 })
@@ -150,16 +187,16 @@ if (!empty($_GET['id'])) {
                 return false;
             });
             
-            $("#submitClasse").click(function () {
+            /*$("#submitClasse").click(function () {
                 var inputValue = $("#nomClasse").val();
                 $.ajax({
                     method: "POST",
-                    url: "api/add",
+                    url: "api/add/classe",
                     data: {nomClasse: inputValue}
                 })
                 .done(function (returnedDatas) {
                     var myData = JSON.parse(returnedDatas);
-                    if(myData.error == "error"){
+                    if(myData.error){
                         alert("Something went wrong");
                     } else {
                         //alert("Data Saved: id:" + myData.id + " data: " + myData.data);
@@ -174,7 +211,31 @@ if (!empty($_GET['id'])) {
                     alert("Something went wrong");
                 });
             });
-
+            
+            $("#submitActivite").click(function () {
+                var inputValue = $("#nomActivite").val();
+                $.ajax({
+                    method: "POST",
+                    url: "api/add/activite",
+                    data: {nomActivite: inputValue}
+                })
+                .done(function (returnedDatas) {
+                    var myData = JSON.parse(returnedDatas);
+                    if(myData.error){
+                        alert("Something went wrong");
+                    } else {
+                        //alert("Data Saved: id:" + myData.id + " data: " + myData.data);
+                        $("#nomActivite").val("");
+                        $("#tableActivite").append("<tr><td>" + myData.data + "</td>" + 
+                                "<td><a href='#' class='rmElement' data-type='activite' data-id='" + myData.id + "'>Modifier</a></td>" +
+                                "<td><a href='#"+ myData.id +"' class='rmElement' data-type='activite' data-id='" + myData.id + "'>Supprimer</a></td></tr>");
+                    }
+                    
+                })
+                .fail(function () {
+                    alert("Something went wrong");
+                });
+            });*/
 
         </script>
 

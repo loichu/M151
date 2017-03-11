@@ -6,7 +6,7 @@
  * @author admin
  */
 require_once("./controller/page.php");
-require_once 'fonctionsDB.inc.php';
+require_once './model/fonctionsDB.inc.php';
 
 class controller_api {
     
@@ -23,9 +23,19 @@ class controller_api {
     }
     
     function add() {
-        if (!empty($_POST['nomClasse'])) {
-            filter_input(INPUT_POST, "nomClasse");
-            $datas = $this->DB->addClasse($_POST);
+        
+        $args = func_get_args();
+        $type = $args[0];
+        //$nomType = 'nom' . ucfirst($type);
+        
+        if (!empty($_POST['nomElement'])) {
+            filter_input(INPUT_POST, 'nomElement');
+            $datas = $this->DB->add($_POST, $type);
+            /* if($type == 'classe'){
+                $datas = $this->DB->addClasse($_POST);
+            } else {
+                $datas = $this->DB->addActivite($_POST);
+            }*/
             echo json_encode($datas);
         } else {
             echo json_encode(array("error" => "error"));

@@ -59,6 +59,29 @@ class DB {
         return $classes;
     }
     
+    
+    
+    function add($data, $type)
+    {
+        if($type == 'classe'){
+            $req = $this->bdd->prepare("INSERT INTO classe (nomClasse) VALUES (:nom)");
+        } else {
+            $req = $this->bdd->prepare("INSERT INTO activite (nomActivite) VALUES (:nom)");
+        }
+        
+        $req->bindParam(':nom', $data['nomElement']);
+        
+        try{
+            $req->execute();
+            $_SESSION['message'] = "La $type a été ajoutée avec succès !";
+            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomElement']);
+        } catch (Exception $ex) {
+            $_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
+            return array("error" => "error: db $ex");
+        }
+    }
+    
+    /*
     function addClasse($data)
     {
         $req = $this->bdd->prepare("INSERT INTO classe (nomClasse) VALUES (:nomClasse)");
@@ -82,10 +105,12 @@ class DB {
         try{
             $req->execute();
             $_SESSION['message'] = "L'activité a été ajoutée avec succès !";
+            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomActivite']);
         } catch (Exception $ex) {
             $_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de l'activite ($ex)";
+            return array("error" => "error");
         }
-    }
+    }*/
     
     function update($id, $type, $data)
     {
