@@ -8,6 +8,8 @@
         <script
             src="./view/inc/jquery-3.1.1.js">
         </script>
-
+        <script
+            src="./view/inc/bootstrap.js">
+        </script>
     </head>
     <body>

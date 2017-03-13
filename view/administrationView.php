@@ -61,7 +61,7 @@ if (!empty($_GET['id'])) {
         <?php
         foreach ($classes as $classe) {
             echo "<tr>";
-            HtmllTools::addRowInTable($classe['nomClasse'], $classe['idClasse'], "classe");
+            HtmlTools::addRowInTable($classe['nomClasse'], $classe['idClasse'], "classe");
             echo "</tr>";
         }
         ?>
@@ -81,7 +81,7 @@ if (!empty($_GET['id'])) {
         <?php
         foreach ($activites as $activite) {
             echo "<tr>";
-            HtmllTools::addRowInTable($activite['nomActivite'], $activite['idActivite'], "activite");
+            HtmlTools::addRowInTable($activite['nomActivite'], $activite['idActivite'], "activite");
             echo "</tr>";
         }
         ?>

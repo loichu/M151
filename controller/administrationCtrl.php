@@ -19,7 +19,7 @@ class controller_administration {
     function index(){
         $this->page = new Page("administration");
         $data = (object) array();
-        //$data->title = "Administration";
+        $data->title = "Administration";
         $this->page->addView("partial/header.php");
         
         $data->classes = $this->DB->listClasses();
@@ -27,8 +27,7 @@ class controller_administration {
 
         $this->page->addView("administrationView.php");
 
-        //$this->page->addView("partial/content.php");
-        //$this->page->addView("partial/footer.php");
+        $this->page->addView("partial/footer.php");
         $this->page->render($data);
     }
     

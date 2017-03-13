@@ -73,10 +73,10 @@ class DB {
         
         try{
             $req->execute();
-            $_SESSION['message'] = "La $type a été ajoutée avec succès !";
+            //$_SESSION['message'] = "La $type a été ajoutée avec succès !";
             return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomElement']);
         } catch (Exception $ex) {
-            $_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
+            //$_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
             return array("error" => "error: db $ex");
         }
     }
@@ -165,10 +165,10 @@ class DB {
         
         try {
             $addEleveReq->execute();
-            $_SESSION['message']['classe'] = "L'utilisateur a été enregistré";
+            //$_SESSION['message']['classe'] = "L'utilisateur a été enregistré";
         } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-            $_SESSION['error']['classe'] = "utilisateur pas enregistré" . $exc;
+            //echo $exc->getTraceAsString();
+            return array("error" => "L'utilisateur n'a pas pu être enregistré" . $exc);
         }
         
         $lastInsertId = $this->bdd->lastInsertId();
@@ -184,14 +184,23 @@ class DB {
             $$req->bindParam(":eleve", $lastInsertId);
             $$req->bindParam(":activite", $choice);
             $$req->bindParam(":ordre", $id);
-            
+            /*
             try {
                 $$req->execute();
                 $_SESSION['message']["activite$id"] = "L'activité $id a été enregistrée";
             } catch (Exception $exc) {
                 echo $exc->getTraceAsString();
                 $_SESSION['error']["activite$id"] = "L'activité $id pas enregistré" . $exc;
+            }*/
+        }
+        try {
+            foreach ($choices as $id => $choice){
+                $req = "addChoice" . "$id";
+                $$req->execute();
             }
+            return array("message" => "$firstName a été inscrit");
+        } catch (Exception $ex) {
+            return array("error" => "$firstName n'a pas pu être inscrit" . $ex);
         }
     }
     

@@ -16,8 +16,8 @@ $(".submitElement").click(function () {
         } else {
             //alert("Data Saved: id:" + myData.id + " data: " + myData.data);
             $("#"+field).val("");
-            $("#"+table).append("<tr><td>" + myData.data + "</td>" + 
-                    "<td><a href='#' class='rmElement' data-type='"+type+"' data-id='" + myData.id + "'>Modifier</a></td>" +
+            $("#"+table).append("<tr><td width='200'>" + myData.data + "</td>" + 
+                    "<td width='80'><a href='#' class='rmElement' data-type='"+type+"' data-id='" + myData.id + "'>Modifier</a></td>" +
                     "<td><a href='#"+ myData.id +"' class='rmElement' data-type='"+type+"' data-id='" + myData.id + "'>Supprimer</a></td></tr>");
         }
 

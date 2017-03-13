@@ -1,5 +1,5 @@
 <?php
-class HtmllTools{
+class HtmlTools{
     
     
     static function afficherSelect($name, $content, $type){
@@ -7,7 +7,7 @@ class HtmllTools{
         //var_dump($content);
         
         echo "<select class='form-control' id=$name name=$name>";
-        
+        echo "<option value=0 selected='true' disabled='disdabled'>Sélectionnez une $type</option>";
         $type = ucfirst($type);
         
         $idName = "id" . $type;

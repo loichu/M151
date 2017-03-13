@@ -15,12 +15,6 @@ class controller_api {
     function __construct() {
         $this->DB = new DB();
     }
-
-    function index() {
-        
-
-        
-    }
     
     function add() {
         
@@ -52,6 +46,29 @@ class controller_api {
         } else {
             echo json_encode(array("error" => "error input"));
         }
+    }
+    
+    function subscribe() {
+        
+        if(!empty($_POST['name']) && !empty($_POST['firstname']))
+        {
+            $name = $_POST['name'];
+            $firstName = $_POST['firstname'];
+            $classe = $_POST['classe'];
+            $choices = [$_POST['activite1'], $_POST['activite2'], $_POST['activite3']];
+
+            if(count(array_unique($choices)) < 3)
+            {
+                echo json_encode(array("error" => "Vous ne pouvez pas choisir deux fois la même activité")); 
+                die();
+            }
+        } else {
+            echo json_encode(array("error" => "Vous devez entrer un nom et un prénom")); 
+            die();
+        }
+        
+        $response = $this->DB->subscribe($name, $firstName, $classe, $choices);
+        echo json_encode($response);
     }
 
 }
