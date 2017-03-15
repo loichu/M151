@@ -12,7 +12,8 @@ $(".submitElement").click(function () {
     .done(function (returnedDatas) {
         var myData = JSON.parse(returnedDatas);
         if(myData.error){
-            alert("Something went wrong");
+            console.log("myData.error");
+            alert(myData.error);
         } else {
             //alert("Data Saved: id:" + myData.id + " data: " + myData.data);
             $("#"+field).val("");
@@ -23,8 +24,10 @@ $(".submitElement").click(function () {
 
     })
     .fail(function () {
+        console.log("Something went wrong");
         alert("Something went wrong");
     });
+    return false;
 });
 
 $("#tableClasse, #tableActivite").on('click', 'a.rmElement', function (e) {
@@ -43,11 +46,7 @@ $("#tableClasse, #tableActivite").on('click', 'a.rmElement', function (e) {
         var myData = JSON.parse(returnedDatas);
         console.log(myData);
         if(myData.error){
-            if(myData.error == 23000){
-                alert("You can't remove this. It's linked to another element.");
-            } else {
-                alert("Something went wrong");
-            }
+            alert(myData.error);
         } else {
             console.log(closestTr);
             closestTr.css('background-color', '#FF3030');

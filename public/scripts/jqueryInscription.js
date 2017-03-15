@@ -28,7 +28,9 @@ $("#formSubscribe").on('click', '#submitSubscription', function () {
             $("#errorMessage").html(myData.error);
             $("#errorAlert").show();
         } else {
-            alert(myData.message);
+            $("#successMessage").html(myData.message);
+            $("#successAlert").show();
+            //alert(myData.message);
         }
 
     })

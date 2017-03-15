@@ -1,10 +1,13 @@
 <?php
 
+//require_once './config.php';
+
 class Page {
 
   private $page_title;
   private $views = array();
   private $data = array();
+  //private $config;
 
   function __construct($title) {
     $this->page_title = $title;
@@ -26,7 +29,7 @@ class Page {
   function render($data) {
     
     foreach ($this->views as $view) {
-        include("./view/" . $view);
+        include("./public/view/" . $view);
     }
   }
 }

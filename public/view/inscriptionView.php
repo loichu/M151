@@ -5,14 +5,11 @@ error_reporting(E_ALL);
 
 session_start();
 
-require_once './view/helpers/phpToHtml.inc.php';
-//require_once 'fonctionsDB.inc.php';
-
-//$htmlTools = new htmllTools();
-//$myDB = new DB();
+require_once './public/helpers/phpToHtml.inc.php';
 
 $activites = $data->activites;
 $classes = $data->classes;
+$jquery = Config::$site_url . "public/scripts/jqueryInscription.js";
 
 if(!empty($_SESSION['error']['identical records'])){
     echo $_SESSION['error']['identical records'];
@@ -31,15 +28,15 @@ if(!empty($_SESSION['error']['no name'])){
 <div class="form-horizontal" id="formSubscribe">
     
     <div class='alert alert-dismissible alert-warning' hidden="true" id='errorAlert'>
-        <button type='button' class='close' data-dismiss='alert'>&times;</button>
+        <button type='button' class='close' onclick="$('.alert').hide()">&times;</button>
         <h4>Warning!</h4>
         <p id='errorMessage'></p>
     </div>
     
-    <div class='alert alert-dismissible alert-success' hidden="true" id='errorAlert'>
-        <button type='button' class='close' data-dismiss='alert'>&times;</button>
-        <h4>Warning!</h4>
-        <p id='errorMessage'></p>
+    <div class='alert alert-dismissible alert-success' hidden="true" id='successAlert'>
+        <button type='button's class='close' onclick="$('.alert').hide()">&times;</button>
+        <h4>Succès!</h4>
+        <p id='successMessage'></p>
     </div>
     
     
@@ -94,7 +91,7 @@ if(!empty($_SESSION['error']['no name'])){
   </div>
   
   <script
-    src="./view/scripts/jqueryInscription.js">
+    src="<?= $jquery ?>">
   </script>
   
 </div>

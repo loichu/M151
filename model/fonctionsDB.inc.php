@@ -81,38 +81,7 @@ class DB {
         }
     }
     
-    /*
-    function addClasse($data)
-    {
-        $req = $this->bdd->prepare("INSERT INTO classe (nomClasse) VALUES (:nomClasse)");
-        $req->bindParam(':nomClasse', $data['nomClasse']);
-        
-        try{
-            $req->execute();
-            $_SESSION['message'] = "La classe a été ajoutée avec succès !";
-            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomClasse']);
-        } catch (Exception $ex) {
-            $_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la classe ($ex)";
-            return array("error" => "error");
-        }
-    }
-    
-    function addActivite($data)
-    {
-        $req = $this->bdd->prepare("INSERT INTO activite (nomActivite) VALUES (:nomActivite)");
-        $req->bindParam(':nomActivite', $data['nomActivite']);
-        
-        try{
-            $req->execute();
-            $_SESSION['message'] = "L'activité a été ajoutée avec succès !";
-            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomActivite']);
-        } catch (Exception $ex) {
-            $_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de l'activite ($ex)";
-            return array("error" => "error");
-        }
-    }*/
-    
-    function update($id, $type, $data)
+    function update($type, $data)
     {
        
         if($type=="classe"){
@@ -122,13 +91,13 @@ class DB {
         }
         
         $req->bindParam(':newName', $data['newName']);
-        $req->bindParam(':id', $id);
+        $req->bindParam(':id', $data['id']);
         
         try{
             $req->execute();
-            $_SESSION['message'] = "La $type a été modifiée avec succès !";
+            return array("message" => "La $type a été modifiée avec succès !");
         } catch (Exception $ex) {
-            $_SESSION['error'] = "Une erreur s'est produite lors de la modification de la $type ($ex)";
+            return array("error" => "Une erreur s'est produite lors de la modification de la $type ($ex)");
         }
     }
     
@@ -144,11 +113,16 @@ class DB {
         
         try{
             $req->execute();
-            $_SESSION['message'] = "La $type a été supprimé avec succès !";
+            // $_SESSION['message'] = "La $type a été supprimé avec succès !";
             return array('id' => $id, 'data' => $type);
         } catch (Exception $ex) {
-            $_SESSION['error'] = "Une erreur s'est produite lors de la suppression de la $type ($ex)";
-            return array("error" => $ex->getCode());
+            // $_SESSION['error'] = "Une erreur s'est produite lors de la suppression de la $type ($ex)";
+            if($ex->getCode() == 23000){
+                return array("error" => "You can't remove this. It's linked to another element.");
+            } else {
+                return array("error" => "Something went wrong");
+            }
+            
         }
     }
     

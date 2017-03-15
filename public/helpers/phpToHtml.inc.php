@@ -31,7 +31,7 @@ class HtmlTools{
         
         // echo "<tr>";
         echo "<td width='200'>$name</td>";
-        echo "<td width='80'><a href='update.php?type=" . $type . "&id=" . $id . "'>Modifier</a></td>";
+        echo "<td width='80'><a href='update/$type/$id'>Modifier</a></td>";
         //echo "<td width='40'><a href=?type=" . $type . "&id=" . $id . "'>Supprimer</a></td>";
         echo "<td width='40'><a href='#' class='rmElement' data-type='" . $type . "' data-id='" . $id . "'>Supprimer</a></td>";
         // echo "</tr>";

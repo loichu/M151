@@ -3,12 +3,13 @@ session_start();
 
 // todo: the model should not be required
 //require_once './model/fonctionsDB.inc.php';
-require_once 'helpers/phpToHtml.inc.php';
+require_once './public/helpers/phpToHtml.inc.php';
 
 //$DB = new DB();
 
 $activites = $data->activites;
 $classes = $data->classes;
+$script = Config::$site_url . "public/scripts/jqueryAdministration.js";
 
 /*if (!empty($_POST['nomClasse'])) {
     $DB->addClasse($_POST);
@@ -69,7 +70,9 @@ if (!empty($_GET['id'])) {
 
     <div id="formClasse">
         <input type ="text" name="nomClasse" id="nomClasse" placeholder="Nom de la classe"/>
-        <input type="button" class="submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse" value='Ajouter' />
+        <button type="submit" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse">Ajouter</button>
+        <!--<a href="#" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse">Ajouter</a>
+        <input type="button" class="submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse" value='Ajouter' />-->
     </div>
 
 </div>
@@ -89,7 +92,9 @@ if (!empty($_GET['id'])) {
 
     <div id="formActivite">
         <input type ="text" name="nomActivite" id="nomActivite" placeholder="Nom de l'activité"/>
-        <input type='button' class="submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite" value="Ajouter" />
+        <button type="submit" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite">Confirmer</button>
+        <!--<a href="#" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite">Ajouter</a>
+        <input type='button' class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite" value="Ajouter" />-->
     </div>
 </div>
 
@@ -99,5 +104,5 @@ if (!empty($_GET['id'])) {
 
 <!-- Jquery -->
 <script
-    src="./view/scripts/jqueryAdministration.js">
+    src="<?= $script ?>">
 </script>
