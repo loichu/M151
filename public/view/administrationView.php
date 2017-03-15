@@ -1,55 +1,13 @@
 <?php
 session_start();
 
-// todo: the model should not be required
-//require_once './model/fonctionsDB.inc.php';
 require_once './public/helpers/phpToHtml.inc.php';
 
-//$DB = new DB();
 
 $activites = $data->activites;
 $classes = $data->classes;
 $script = Config::$site_url . "public/scripts/jqueryAdministration.js";
-
-/*if (!empty($_POST['nomClasse'])) {
-    $DB->addClasse($_POST);
-    header("location:administration");
-}
-
-if (!empty($_POST['nomActivite'])) {
-    $DB->addActivite($_POST);
-    header("location:administration");
-}
-
-if (!empty($_POST['newName'])) {
-    $data = $_POST;
-    $id = $_POST['id'];
-    $type = $_POST['type'];
-    $DB->update($id, $type, $data);
-    header("location:administration");
-}
-
-if (!empty($_GET['id'])) {
-    $id = $_GET['id'];
-    $type = $_GET['type'];
-    $DB->remove($id, $type);
-    header("location:administration");
-}*/
 ?>
-
-<div class="col-md-12">
-    <?php
-    if (!empty($_SESSION['error']) && empty($_POST) && empty($_GET)) {
-        echo $_SESSION['error'];
-        $_SESSION['error'] = "";
-    }
-
-    if (!empty($_SESSION['message']) && empty($_POST) && empty($_GET)) {
-        echo $_SESSION['message'];
-        $_SESSION['message'] = "";
-    }
-    ?>
-</div>
 
 <div class="col-md-12">
     <h1>Administration</h1>
@@ -69,8 +27,10 @@ if (!empty($_GET['id'])) {
     </table>
 
     <div id="formClasse">
-        <input type ="text" name="nomClasse" id="nomClasse" placeholder="Nom de la classe"/>
-        <button type="submit" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse">Ajouter</button>
+        <input type="text" name="nomClasse" id="nomClasse" placeholder="Nom de la classe"/>
+        <button type="submit" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse"
+                data-field="nomClasse">Ajouter
+        </button>
         <!--<a href="#" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse">Ajouter</a>
         <input type="button" class="submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse" value='Ajouter' />-->
     </div>
@@ -91,8 +51,10 @@ if (!empty($_GET['id'])) {
     </table>
 
     <div id="formActivite">
-        <input type ="text" name="nomActivite" id="nomActivite" placeholder="Nom de l'activité"/>
-        <button type="submit" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite">Confirmer</button>
+        <input type="text" name="nomActivite" id="nomActivite" placeholder="Nom de l'activité"/>
+        <button type="submit" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite"
+                data-field="nomActivite">Confirmer
+        </button>
         <!--<a href="#" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite">Ajouter</a>
         <input type='button' class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite" value="Ajouter" />-->
     </div>
@@ -104,5 +66,5 @@ if (!empty($_GET['id'])) {
 
 <!-- Jquery -->
 <script
-    src="<?= $script ?>">
+        src="<?= $script ?>">
 </script>

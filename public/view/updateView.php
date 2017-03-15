@@ -8,6 +8,7 @@ $type = $data->type;
 $element = $data->element;
 $id = $data->id;
 $fieldName = "nom". ucfirst($type);
+$jquery = Config::$site_url . "public/scripts/jqueryUpdate.js";
 ?>
 
 <!--<!DOCTYPE html>
@@ -53,5 +54,5 @@ $fieldName = "nom". ucfirst($type);
             ?>
         </pre>
         <script
-            src="./view/inc/jqueryUpdate.js">
+            src="<?= $jquery ?>">
         </script>
