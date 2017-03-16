@@ -41,6 +41,8 @@ ALTER TABLE eleve
 
 CREATE TABLE users
 (
+    idUser INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(25),
-    password VARCHAR(50)
+    password VARCHAR(50),
+    PRIMARY KEY (idUser)
 )

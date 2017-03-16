@@ -20,11 +20,11 @@ class Controller_api
         $this->DB = new DB();
     }
 
-    function add()
+    function add($param)
     {
         // Get the parameters
-        $args = getArgs();
-        $type = $args[0];
+        $type = $param[0];
+        //echo $type;
 
         // Check if the field is not empty and exec SQL request in the model.
         if (!empty($_POST['nomElement'])) {
@@ -69,20 +69,19 @@ class Controller_api
         echo json_encode($response);
     }
 
-    function update()
+    function update($param)
     {
-        $args = getArgs();
-        $type = $args[0];
+        $type = $param[0];
 
         if (!empty($_POST['newName'])) {
             filter_input(INPUT_POST, 'newName', FILTER_SANITIZE_STRING);
-            $datas = $this->DB->update($type, $_POST);
-            echo json_encode($datas);
+            $response = $this->DB->update($type, $_POST);
+            echo json_encode($response);
         } else {
             echo json_encode(array("error" => "Vous ne pouvez pas laisser le champ vide"));
         }
 
-        header('location:administration');
+        //header('location:administration');
     }
 
 }

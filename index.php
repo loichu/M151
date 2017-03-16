@@ -26,8 +26,8 @@ $param3 = (isset($uriArray[5])) ? $uriArray[5] : '';*/
 // be sure that the controller is valid before loading it
 if (in_array($controller, Config::$allowed_controller)) {
     require_once("./controller/"  . $controller . "Ctrl.php");
-    $cntrl_class_name = "Controller_" . $controller;
-    $cont = new $cntrl_class_name();
+    $ctrl_class_name = "Controller_" . $controller;
+    $cont = new $ctrl_class_name();
     if (method_exists($cont, $method)) {
       if (!empty($params)) {
         $cont->$method($params);
@@ -45,7 +45,7 @@ if (in_array($controller, Config::$allowed_controller)) {
 
 if (Config::$debug) {
   print "<br /><br /><br />--- debug -----<pre>";
-  print_r($_SERVER);
+  print_r($params);
   print "</pre>";
 }
 

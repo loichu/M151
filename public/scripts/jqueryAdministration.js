@@ -3,22 +3,23 @@ $(".submitElement").click(function () {
     var table = $(this).data('table');
     var field = $(this).data('field');
     var inputValue = $("#"+field).val();
-
+    console.log(type);
     $.ajax({
         method: "POST",
-        url: "api/add/"+type,
+        url: "/api/add/"+type,
         data: {nomElement: inputValue}
     })
     .done(function (returnedDatas) {
+        console.log(type);
         var myData = JSON.parse(returnedDatas);
         if(myData.error){
-            console.log("myData.error");
-            alert(myData.error);
+            $("#errorMessage").html(myData.error);
+            $("#errorAlert").show();
         } else {
             //alert("Data Saved: id:" + myData.id + " data: " + myData.data);
             $("#"+field).val("");
             $("#"+table).append("<tr><td width='200'>" + myData.data + "</td>" + 
-                    "<td width='80'><a href='#' class='rmElement' data-type='"+type+"' data-id='" + myData.id + "'>Modifier</a></td>" +
+                    "<td width='80'><a href='/update/" + myData.type + "/" + myData.id +"'>Modifier</a></td>" +
                     "<td><a href='#"+ myData.id +"' class='rmElement' data-type='"+type+"' data-id='" + myData.id + "'>Supprimer</a></td></tr>");
         }
 
@@ -39,7 +40,7 @@ $("#tableClasse, #tableActivite").on('click', 'a.rmElement', function (e) {
 
     $.ajax({
         method: "POST",
-        url: "api/remove",
+        url: "/api/remove",
         data: {id: id, type: type}
     })
     .done(function (returnedDatas) {
@@ -62,5 +63,13 @@ $("#tableClasse, #tableActivite").on('click', 'a.rmElement', function (e) {
     return false;
 });
 
+$(function () {
+    var hash = window.location.hash;
+    if(hash == "#updated"){
+        $("#successMessage").html("Modification réussie !");
+        $("#successAlert").show();
+        parent.location.hash = "";
+    }
+})
 
 

@@ -39,5 +39,68 @@ class Controller_administration {
         // Render everything together and display it !
         $this->page->render($data);
     }
+
+    function classe()
+    {
+        // Create a new empty page
+        $this->page = new Page("Administration");
+
+        // Add datas from the model
+        $data = (object) array();
+        $data->classes = $this->DB->listClasses();
+        $data->activites = $this->DB->listActivites();
+
+        // Add views
+        $this->page->addView("partial/header.php");
+        $this->page->addView("administration/headView.php");
+        $this->page->addView("administration/classeView.php");
+        $this->page->addView("administration/footView.php");
+        $this->page->addView("partial/footer.php");
+
+        // Render everything together and display it !
+        $this->page->render($data);
+    }
+
+    function activite()
+    {
+        // Create a new empty page
+        $this->page = new Page("Administration");
+
+        // Add datas from the model
+        $data = (object) array();
+        $data->classes = $this->DB->listClasses();
+        $data->activites = $this->DB->listActivites();
+
+        // Add views
+        $this->page->addView("partial/header.php");
+        $this->page->addView("administration/headView.php");
+        $this->page->addView("administration/activiteView.php");
+        $this->page->addView("administration/footView.php");
+        $this->page->addView("partial/footer.php");
+
+        // Render everything together and display it !
+        $this->page->render($data);
+    }
+
+    function user()
+    {
+        // Create a new empty page
+        $this->page = new Page("Administration");
+
+        // Add datas from the model
+        $data = (object) array();
+        $data->classes = $this->DB->listClasses();
+        $data->activites = $this->DB->listActivites();
+
+        // Add views
+        $this->page->addView("partial/header.php");
+        $this->page->addView("administration/headView.php");
+        $this->page->addView("administration/userView.php");
+        $this->page->addView("administration/footView.php");
+        $this->page->addView("partial/footer.php");
+
+        // Render everything together and display it !
+        $this->page->render($data);
+    }
     
 }

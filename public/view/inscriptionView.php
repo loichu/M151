@@ -28,13 +28,13 @@ if(!empty($_SESSION['error']['no name'])){
 <div class="form-horizontal" id="formSubscribe">
     
     <div class='alert alert-dismissible alert-warning' hidden="true" id='errorAlert'>
-        <button type='button' class='close' onclick="$('.alert').hide()">&times;</button>
+        <button type='button' class='close' onclick="$('.alert-warning').hide()">&times;</button>
         <h4>Warning!</h4>
         <p id='errorMessage'></p>
     </div>
     
     <div class='alert alert-dismissible alert-success' hidden="true" id='successAlert'>
-        <button type='button's class='close' onclick="$('.alert').hide()">&times;</button>
+        <button type='button's class='close' onclick="$('.alert-success').hide()">&times;</button>
         <h4>Succès!</h4>
         <p id='successMessage'></p>
     </div>

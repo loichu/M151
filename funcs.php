@@ -12,9 +12,8 @@ function debug($v)
     }
 }
 
-function getArgs()
+function argsAsArray($args)
 {
-    $args = func_get_args();
     $argsArray = $args[0];
     return $argsArray;
 }

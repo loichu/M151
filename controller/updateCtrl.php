@@ -12,7 +12,7 @@ require_once("./controller/page.php");
 //$type = $_GET['type'];
 //$id = $_GET['id'];
 
-class controller_update {
+class Controller_update {
     
     private $DB;
     
@@ -20,14 +20,12 @@ class controller_update {
         $this->DB = new DB();
     }
     
-    function classe(){
-        $this->page = new Page("update");
-        
-        $args = func_get_args();
-        $id = $args[0];
+    function classe($param){
+        $this->page = new Page("Update");
+
+        $id = $param[0];
         
         $data = (object) array();
-        $data->title = "Update";
         $data->type = "classe";
         $data->id = $id;
         $data->element = $this->DB->getClasse($id);
@@ -39,17 +37,15 @@ class controller_update {
         $this->page->render($data);
     }
     
-    function activite(){
-        $this->page = new Page("update");
-        
-        $args = func_get_args();
-        $id = $args[0];
-        
+    function activite($param){
+        $this->page = new Page("Update");
+
+        $id = $param[0];
+
         $data = (object) array();
-        $data->title = "Update";
         $data->type = "activite";
         $data->id = $id;
-        $data->element = $this->DB->getClasse($id);
+        $data->element = $this->DB->getActivite($id);
         
         $this->page->addView("partial/header.php");
         $this->page->addView("updateView.php");

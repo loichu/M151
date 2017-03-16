@@ -22,8 +22,12 @@ class DB {
     function getActivite($id){
         $reponse = $this->bdd->prepare('SELECT * FROM activite WHERE idActivite = (:id)');
         $reponse->bindParam('id', $id);
-        $reponse->execute();
-        
+        try{
+            $reponse->execute();
+        } catch (Exception $e){
+            echo $e;
+        }
+
         $activite = $reponse->fetch(PDO::FETCH_ASSOC);
     
         return $activite;
@@ -74,7 +78,7 @@ class DB {
         try{
             $req->execute();
             //$_SESSION['message'] = "La $type a été ajoutée avec succès !";
-            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomElement']);
+            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomElement'], "type" => $type);
         } catch (Exception $ex) {
             //$_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
             return array("error" => "error: db $ex");

@@ -1,17 +1,28 @@
 <?php
-session_start();
-
-require_once './public/helpers/phpToHtml.inc.php';
+//require_once './public/helpers/phpToHtml.inc.php';
 
 
-$activites = $data->activites;
-$classes = $data->classes;
-$script = Config::$site_url . "public/scripts/jqueryAdministration.js";
+//$activites = $data->activites;
+//$classes = $data->classes;
+//$script = Config::$site_url . "public/scripts/jqueryAdministration.js";
 ?>
+
+<!--<div class='alert alert-dismissible alert-warning' hidden="true" id='errorAlert'>
+    <button type='button' class='close' onclick="$('.alert-warning').hide()">&times;</button>
+    <h4>Warning!</h4>
+    <p id='errorMessage'></p>
+</div>
+
+<div class='alert alert-dismissible alert-success' hidden="true" id='successAlert'>
+    <button type='button' class='close' onclick="$('.alert-success').hide()"> &times;</button>
+    <h4>Succès!</h4>
+    <p id='successMessage'></p>
+</div>
+
 
 <div class="col-md-12">
     <h1>Administration</h1>
-</div>
+</div>-->
 
 <div class="col-md-6">
     <h2>Insérer une nouvelle classe</h2>
@@ -28,9 +39,9 @@ $script = Config::$site_url . "public/scripts/jqueryAdministration.js";
 
     <div id="formClasse">
         <input type="text" name="nomClasse" id="nomClasse" placeholder="Nom de la classe"/>
-        <button type="submit" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse"
+        <a href="#" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse"
                 data-field="nomClasse">Ajouter
-        </button>
+        </a>
         <!--<a href="#" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse">Ajouter</a>
         <input type="button" class="submitElement" data-type="classe" data-table="tableClasse" data-field="nomClasse" value='Ajouter' />-->
     </div>
@@ -52,9 +63,9 @@ $script = Config::$site_url . "public/scripts/jqueryAdministration.js";
 
     <div id="formActivite">
         <input type="text" name="nomActivite" id="nomActivite" placeholder="Nom de l'activité"/>
-        <button type="submit" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite"
+        <a href="#" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite"
                 data-field="nomActivite">Confirmer
-        </button>
+        </a>
         <!--<a href="#" class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite">Ajouter</a>
         <input type='button' class="btn btn-primary submitElement" data-type="activite" data-table="tableActivite" data-field="nomActivite" value="Ajouter" />-->
     </div>
@@ -64,7 +75,3 @@ $script = Config::$site_url . "public/scripts/jqueryAdministration.js";
     <?php print_r($activites) ?>
 </pre>
 
-<!-- Jquery -->
-<script
-        src="<?= $script ?>">
-</script>
