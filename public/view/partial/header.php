@@ -7,6 +7,12 @@ $jquery = $base_url . "public/inc/jquery-3.1.1.js";
 $sidebarMenuJs = $base_url . "public/scripts/sidebarMenu.js";
 $sidebarMenuCss = $base_url . "public/style/sidebarMenu.css";
 
+$welcomeTab = $base_url . "welcome";
+$inscriptionTab = $base_url . "inscription";
+$adminActiviteTab = $base_url . "administration/activite";
+$adminClasseTab = $base_url . "administration/classe";
+$adminUserTab = $base_url . "administration/user";
+
 $uri = $_SERVER["REQUEST_URI"];
 $uriArray = explode('/', $uri);
 $controller = $uriArray[1];
@@ -43,14 +49,14 @@ $method = $uriArray[2];
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li <?= $controller == "welcome" ? "class='active'" : ""?> ><a href="/welcome">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                        <li <?= $controller == "inscription" ? "class='active'" : ""?>><a href="/inscription">Inscription<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+                        <li <?= $controller == "welcome" ? "class='active'" : ""?> ><a href="<?= $welcomeTab ?>">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li <?= $controller == "inscription" ? "class='active'" : ""?>><a href="<?= $inscriptionTab ?>">Inscription<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
                         <li <?= $controller == "administration" ? "class='dropdown active'" : "class='dropdown'"?>>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
                             <ul class="dropdown-menu forAnimate" role="menu">
-                                <li <?= $controller == "administration" && $method == "classe" ? "class='active'" : ""?>><a href="/administration/classe">Classes</a></li>
-                                <li <?= $controller == "administration" && $method == "activite" ? "class='active'" : ""?>><a href="/administration/activite">Activités</a></li>
-                                <li <?= $controller == "administration" && $method == "user" ? "class='active'" : ""?>><a href="/administration/user">Administrateurs</a></li>
+                                <li <?= $controller == "administration" && $method == "classe" ? "class='active'" : ""?>><a href="<?= $adminClasseTab ?>">Classes</a></li>
+                                <li <?= $controller == "administration" && $method == "activite" ? "class='active'" : ""?>><a href="<?= $adminActiviteTab ?>">Activités</a></li>
+                                <li <?= $controller == "administration" && $method == "user" ? "class='active'" : ""?>><a href="<?= $adminUserTab ?>">Administrateurs</a></li>
                             </ul>
                         </li>
                     </ul>

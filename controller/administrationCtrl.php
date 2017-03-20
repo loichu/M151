@@ -11,6 +11,8 @@
 require_once("./controller/page.php");
 require_once './model/fonctionsDB.inc.php';
 
+session_start();
+
 class Controller_administration {
     
     private $DB;
@@ -19,9 +21,16 @@ class Controller_administration {
     {
         // Connect to the model
         $this->DB = new DB();
+        if(!isset($_SESSION['user']) && !isset($_SESSION['password'])){
+            $this->page = new Page("login");
+            $data = (object) array();
+            $this->page->addView("loginView.php");
+            $this->page->render($data);
+            die();
+        }
     }
     
-    function index()
+    /*function index()
     {
         // Create a new empty page
         $this->page = new Page("Administration");
@@ -38,7 +47,7 @@ class Controller_administration {
 
         // Render everything together and display it !
         $this->page->render($data);
-    }
+    }*/
 
     function classe()
     {
@@ -48,7 +57,6 @@ class Controller_administration {
         // Add datas from the model
         $data = (object) array();
         $data->classes = $this->DB->listClasses();
-        $data->activites = $this->DB->listActivites();
 
         // Add views
         $this->page->addView("partial/header.php");
@@ -68,7 +76,6 @@ class Controller_administration {
 
         // Add datas from the model
         $data = (object) array();
-        $data->classes = $this->DB->listClasses();
         $data->activites = $this->DB->listActivites();
 
         // Add views
@@ -89,8 +96,7 @@ class Controller_administration {
 
         // Add datas from the model
         $data = (object) array();
-        $data->classes = $this->DB->listClasses();
-        $data->activites = $this->DB->listActivites();
+        $data->users = $this->DB->listUsers();
 
         // Add views
         $this->page->addView("partial/header.php");

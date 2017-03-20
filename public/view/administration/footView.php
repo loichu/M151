@@ -1,5 +1,6 @@
 <?php
 $script = Config::$site_url . "public/scripts/jqueryAdministration.js";
+$scriptUser = Config::$site_url . "public/scripts/jqueryAddUser.js";
 
 if(Config::$debug){
     if(isset($activites)){
@@ -18,5 +19,14 @@ if(Config::$debug){
 ?>
 <!-- Jquery -->
 <script
-        src="<?= $script ?>">
+    <?php
+    $method = getMethod($_SERVER["REQUEST_URI"]);
+    
+    if($method != "user"){
+        echo "src='$script'";
+    } else {
+        echo "src='$scriptUser'";
+    }
+    ?>
+    >
 </script>

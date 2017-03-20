@@ -13,7 +13,7 @@ $uri = $_SERVER["REQUEST_URI"];
 $uriArray = explode('/', $uri);
 
 // In easy php I use M151 directory: have to cut it
-//array_shift($uriArray);
+array_shift($uriArray);
 
 // First arg is controller, second is method, the rest are parameters
 $controller = (isset($uriArray[1])) ? $uriArray[1] : '';
@@ -44,9 +44,10 @@ if (in_array($controller, Config::$allowed_controller)) {
     require_once "./controller/page.php";
     $page = new Page("Error 404");
     $page->addView("partial/header.php");
-    $page->addView("404.html");
+    $page->addView("404.php");
     $page->addView("partial/footer.php");
-    $page->render();
+    $data = (object) array();
+    $page->render($data);
 }
 
 if (Config::$debug) {

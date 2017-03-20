@@ -25,13 +25,24 @@ class Controller_api
         // Get the parameters
         $type = $param[0];
         //echo $type;
-
+        
+        if ($type == "user"){
+            if (!empty($_POST['username']) && !empty($_POST['password'])){
+                $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+                $password = sha1($_POST['password']);
+                $datas = $this->DB->addUser($username, $password);
+                echo json_encode($datas);
+            } else {
+                echo json_encode(array("error" => "Vous devez remplir tous les champs"));
+            }
+        }
+        
         // Check if the field is not empty and exec SQL request in the model.
         if (!empty($_POST['nomElement'])) {
             filter_input(INPUT_POST, 'nomElement', FILTER_SANITIZE_STRING);
             $datas = $this->DB->add($_POST, $type);
             echo json_encode($datas);
-        } else {
+        } else if ($type != "user") {
             echo json_encode(array("error" => "Vous ne pouvez pas laisser le champ vide"));
         }
     }
@@ -82,6 +93,14 @@ class Controller_api
         }
 
         //header('location:administration');
+    }
+    
+    function checkpassword()
+    {
+        if (!empty($_POST['username']) && !empty($_POST['password'])){
+            $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+            $password = sha1($_POST['password']);
+        }
     }
 
 }

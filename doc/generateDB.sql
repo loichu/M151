@@ -1,6 +1,6 @@
 SET default_storage_engine=InnoDB;
 
-CREATE TABLE eleve
+CREATE TABLE IF NOT EXISTS eleve
 (
     idEleve INT NOT NULL AUTO_INCREMENT,
     nom VARCHAR(50),
@@ -9,21 +9,21 @@ CREATE TABLE eleve
     PRIMARY KEY (idEleve)
 );
 
-CREATE TABLE activite
+CREATE TABLE IF NOT EXISTS activite
 (
     idActivite INT NOT NULL AUTO_INCREMENT,
     nomActivite VARCHAR(50),
     PRIMARY KEY (idActivite)
 );
 
-CREATE TABLE classe
+CREATE TABLE IF NOT EXISTS classe
 (
     idClasse INT NOT NULL AUTO_INCREMENT,
     nomClasse VARCHAR(50),
     PRIMARY KEY (idClasse)
 );
 
-CREATE TABLE inscrire
+CREATE TABLE IF NOT EXISTS inscrire
 (
     fkEleve INT NOT NULL,
     fkActivite INT NOT NULL,
@@ -39,7 +39,7 @@ ALTER TABLE eleve
     REFERENCES classe(idClasse)
 ;
 
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     idUser INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(25),

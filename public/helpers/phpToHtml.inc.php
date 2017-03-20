@@ -30,10 +30,10 @@ class HtmlTools{
     static function addRowInTable($name, $id, $type){
         
         // echo "<tr>";
-        echo "<td width='100'>$name</td>";
-        echo "<td width='10'><a href='" . Config::$site_url ."update/$type/$id'>Modifier</a></td>";
+        echo "<td width='200'>$name</td>";
+        echo "<td width='80'><a href='" . Config::$site_url ."update/$type/$id'>Modifier</a></td>";
         //echo "<td width='40'><a href=?type=" . $type . "&id=" . $id . "'>Supprimer</a></td>";
-        echo "<td width='10'><a href='#' class='rmElement' data-type='" . $type . "' data-id='" . $id . "'>Supprimer</a></td>";
+        echo "<td><a href='#' class='rmElement' data-type='" . $type . "' data-id='" . $id . "'>Supprimer</a></td>";
         // echo "</tr>";
     }
     

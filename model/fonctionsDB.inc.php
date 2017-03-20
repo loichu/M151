@@ -63,7 +63,15 @@ class DB {
         return $classes;
     }
     
+    function  listUsers()
+    {    
+        $reponse = $this->bdd->prepare('SELECT * FROM users');
+        $reponse->execute();
+        
+        $users = $reponse->fetchAll(PDO::FETCH_ASSOC);
     
+        return $users;
+    }
     
     function add($data, $type)
     {
@@ -79,6 +87,22 @@ class DB {
             $req->execute();
             //$_SESSION['message'] = "La $type a été ajoutée avec succès !";
             return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomElement'], "type" => $type);
+        } catch (Exception $ex) {
+            //$_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
+            return array("error" => "error: db $ex");
+        }
+    }
+    
+    function addUser($username, $password)
+    {
+        $req = $this->bdd->prepare("INSERT INTO users (username, password) VALUE (:username, :password)");
+        $req->bindParam(':username', $username);
+        $req->bindParam(':password', $password);
+        
+        try{
+            $req->execute();
+            //$_SESSION['message'] = "La $type a été ajoutée avec succès !";
+            return array("id" => $this->bdd->lastInsertId(), "username" => $username, "password" => $password, "type" => "user");
         } catch (Exception $ex) {
             //$_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
             return array("error" => "error: db $ex");
@@ -185,11 +209,14 @@ class DB {
     function checkLogin($username, $password)
     {
         // Check user and password at once
-        $req = $this->bdd->prepare("SELECT username FROM user WHERE username = (:username) AND password = (:password)");
+        $req = $this->bdd->prepare("SELECT username FROM users WHERE username = (:username) AND password = (:password)");
         $req->bindParam(":username", $username);
         $req->bindParam(":password", $password);
-        $req->execute();
-        $isCorrect = $req->fetchAll(PDO::FETCH_ASSOC);
-        return isCorrect;
+        try {
+            $req->execute();
+            return array("username" => $username, "password" => $password);
+        } catch (Exception $ex) {
+            return array("error" => "Votre identifiant ou mot de passe est erronné");
+        }
     }
 }
