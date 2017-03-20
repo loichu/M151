@@ -38,9 +38,15 @@ if (in_array($controller, Config::$allowed_controller)) {
       // fallback to the default method
       $cont->index();
   }
+} else if(empty($controller)) {
+    header("location:welcome");
 } else {
-    echo "To Do - Load default controller as fallback";
-    debug($controller);
+    require_once "./controller/page.php";
+    $page = new Page("Error 404");
+    $page->addView("partial/header.php");
+    $page->addView("404.html");
+    $page->addView("partial/footer.php");
+    $page->render();
 }
 
 if (Config::$debug) {

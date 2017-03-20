@@ -6,6 +6,11 @@ $bootstrapJs = $base_url . "public/inc/bootstrap.js";
 $jquery = $base_url . "public/inc/jquery-3.1.1.js";
 $sidebarMenuJs = $base_url . "public/scripts/sidebarMenu.js";
 $sidebarMenuCss = $base_url . "public/style/sidebarMenu.css";
+
+$uri = $_SERVER["REQUEST_URI"];
+$uriArray = explode('/', $uri);
+$controller = $uriArray[1];
+$method = $uriArray[2];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -33,20 +38,19 @@ $sidebarMenuCss = $base_url . "public/style/sidebarMenu.css";
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Journée Sportive</a>
+                    <a class="navbar-brand" href="/welcome">Journée Sportive</a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                        <li ><a href="/inscription">Inscription<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
-                        <li class="dropdown">
+                        <li <?= $controller == "welcome" ? "class='active'" : ""?> ><a href="/welcome">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li <?= $controller == "inscription" ? "class='active'" : ""?>><a href="/inscription">Inscription<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+                        <li <?= $controller == "administration" ? "class='dropdown active'" : "class='dropdown'"?>>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
                             <ul class="dropdown-menu forAnimate" role="menu">
-                                <li><a href="/administration/classe">Classes</a></li>
-                                <li><a href="/administration/activite">Activités</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Administrateurs</a></li>
+                                <li <?= $controller == "administration" && $method == "classe" ? "class='active'" : ""?>><a href="/administration/classe">Classes</a></li>
+                                <li <?= $controller == "administration" && $method == "activite" ? "class='active'" : ""?>><a href="/administration/activite">Activités</a></li>
+                                <li <?= $controller == "administration" && $method == "user" ? "class='active'" : ""?>><a href="/administration/user">Administrateurs</a></li>
                             </ul>
                         </li>
                     </ul>

@@ -41,21 +41,21 @@ if(!empty($_SESSION['error']['no name'])){
     
     
   <div class="form-group">
-      <label for="nom" class="col-lg-2 control-label">Nom: </label>
+      <label for="nom" class="col-lg-4 control-label">Nom: </label>
       <div class="col-lg-4">
           <input type="text" name="nom" id="name" class="form-control" />
       </div>
   </div>
 
   <div class="form-group">
-      <label for="prenom" class="col-lg-2 control-label">Prénom: </label>
+      <label for="prenom" class="col-lg-4 control-label">Prénom: </label>
       <div class="col-lg-4">
           <input type="text" name="prenom" id="firstname" class="form-control" />
       </div>
   </div>
 
   <div class="form-group">
-      <label for="classe" class="col-lg-2 control-label">Classe: </label>
+      <label for="classe" class="col-lg-4 control-label">Classe: </label>
       <div class="col-lg-4">
           <?php HtmlTools::afficherSelect("classe", $classes, "classe");?>
       </div>
@@ -64,28 +64,29 @@ if(!empty($_SESSION['error']['no name'])){
   <hr>
 
   <div class='form-group'>
-      <label for="premier" class='col-lg-2 control-label'>Premier choix: </label>
+      <label for="premier" class='col-lg-4 control-label'>Premier choix: </label>
       <div class='col-lg-4'>
           <?php HtmlTools::afficherSelect("activite1", $activites, "activite"); ?>
       </div>
   </div>
 
   <div class='form-group'>
-      <label for="deuxième" class='col-lg-2 control-label'>Deuxième choix: </label>
+      <label for="deuxième" class='col-lg-4 control-label'>Deuxième choix: </label>
       <div class='col-lg-4'>
           <?php HtmlTools::afficherSelect("activite2", $activites, "activite"); ?>
       </div>
   </div>
 
   <div class='form-group'>
-      <label for="troisième" class='col-lg-2 control-label'>Troisième choix: </label>
+      <label for="troisième" class='col-lg-4 control-label'>Troisième choix: </label>
       <div class='col-lg-4'>
           <?php HtmlTools::afficherSelect("activite3", $activites, "activite"); ?>
       </div>
   </div>        
 
 
-  <div class="col-lg-10 col-lg-offset-2">
+  <!--<div class="col-lg-10 col-lg-offset-2">-->
+  <div class="form-group">
       <button type="submit" id="submitSubscription" class="btn btn-primary">Confirmer</button>
       <button type="reset" class="btn btn-default">Annuler</button>
   </div>

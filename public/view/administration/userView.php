@@ -6,16 +6,17 @@ $users = $data->users;
 
     <table id="tableActivite">
         <?php
-        foreach ($activites as $activite) {
+        foreach ($users as $user) {
             echo "<tr>";
-            HtmlTools::addRowInTable($users['username'], $activite['idUser'], "user");
+            HtmlTools::addRowInTable($users['username'], $users['idUser'], "user");
             echo "</tr>";
         }
         ?>
     </table>
 
     <div id="formActivite">
-        <input type="text" name="nomActivite" id="nomActivite" placeholder="Nom de l'activité"/>
+        <input type="text" name="username" id="username" placeholder="Nom d'utilisateur"/>
+        <input type="password" name="password" id="password" placeholder="Mot de passe"/>
         <a href="#" class="btn btn-primary submitElement" data-type="user" data-table="tableUser"
            data-field="nomActivite">Confirmer
         </a>

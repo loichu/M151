@@ -5,7 +5,7 @@
 class Config {
     public static $debug = false;
     public static $site_url = "http://dev.journeesportive.ch/";
-    public static $allowed_controller = array("default", "administration", "api", "inscription", "update", "autoloader");
+    public static $allowed_controller = array("default", "administration", "api", "inscription", "update", "welcome");
 }
 // $c = (object) array();
 // $c->d = false ;

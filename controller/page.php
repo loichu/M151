@@ -28,7 +28,7 @@ class Page
         $this->data->$$key = $var;
     }
 
-    function render($data)
+    function render($data = array())
     {
         $data->title = $this->page_title;
 
