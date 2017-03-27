@@ -13,7 +13,7 @@ $uri = $_SERVER["REQUEST_URI"];
 $uriArray = explode('/', $uri);
 
 // In easy php I use M151 directory: have to cut it
-array_shift($uriArray);
+// array_shift($uriArray);
 
 // First arg is controller, second is method, the rest are parameters
 $controller = (isset($uriArray[1])) ? $uriArray[1] : '';

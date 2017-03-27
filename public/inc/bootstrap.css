@@ -1,4 +1,21 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
+
+/* Perso */
+html, body, .container-table {
+    height: 100%;
+}
+.container-table {
+    display: table;
+}
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}
+.center_div{
+    margin: 0 auto;
+    width:80% /* value of your choice which suits your alignment */
+}
+
 /*!
  * bootswatch v3.3.7
  * Homepage: http://bootswatch.com

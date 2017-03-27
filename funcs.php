@@ -23,7 +23,7 @@ function getMethod($uri)
     $uriArray = explode('/', $uri);
 
     // In easy php I use M151 directory: have to cut it
-    array_shift($uriArray);
+    // array_shift($uriArray);
     
     return $uriArray[2];
 }

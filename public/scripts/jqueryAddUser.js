@@ -5,7 +5,7 @@ $("#formUser").on('click', '#createUser', function () {
     var password = $("#password").val();
     $.ajax({
         method: "POST",
-        url: "/M151/api/add/user",
+        url: "/api/add/user",
         data: {username: username,
                password: password}
     })

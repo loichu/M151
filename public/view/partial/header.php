@@ -66,4 +66,4 @@ $method = $uriArray[2];
         <script
             src="<?= $sidebarMenuJs ?>">
         </script>
-        <div class="main">
+        <div class="main container center_div">

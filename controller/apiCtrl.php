@@ -10,6 +10,8 @@
 require_once("./controller/page.php");
 require_once './model/fonctionsDB.inc.php';
 
+session_start();
+
 class Controller_api
 {
     private $DB;
@@ -100,6 +102,17 @@ class Controller_api
         if (!empty($_POST['username']) && !empty($_POST['password'])){
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
             $password = sha1($_POST['password']);
+            $response = $this->DB->checkLogin($username, $password);
+            if(!isset($response['error'])){
+                $_SESSION['username'] = $response['username'];
+                $_SESSION['password'] = $response['password'];
+                echo json_encode(array("message" => "Connection établie"));
+            } else {
+                echo json_encode($response);
+            }
+        } else {
+            echo json_encode(array("error" => "Vous devez remplir tous les champs"));
+
         }
     }
 

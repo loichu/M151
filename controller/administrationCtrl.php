@@ -13,23 +13,35 @@ require_once './model/fonctionsDB.inc.php';
 
 session_start();
 
-class Controller_administration {
-    
+class Controller_administration
+{
+
     private $DB;
-    
+
     function __construct()
     {
         // Connect to the model
         $this->DB = new DB();
-        if(!isset($_SESSION['user']) && !isset($_SESSION['password'])){
+
+        if (!isset($_SESSION['user']) && !isset($_SESSION['password'])) {
             $this->page = new Page("login");
-            $data = (object) array();
+            $data = (object)array();
             $this->page->addView("loginView.php");
             $this->page->render($data);
             die();
+        } else {
+            $check = $this->DB->checkLogin($_SESSION['user'], $_SESSION['password']);
+            if (isset($check['error'])) {
+                $this->page = new Page("login");
+                $data = (object)array();
+                $data->error = $check['error'];
+                $this->page->addView("loginView.php");
+                $this->page->render($data);
+                die();
+            }
         }
     }
-    
+
     /*function index()
     {
         // Create a new empty page
@@ -55,7 +67,7 @@ class Controller_administration {
         $this->page = new Page("Administration");
 
         // Add datas from the model
-        $data = (object) array();
+        $data = (object)array();
         $data->classes = $this->DB->listClasses();
 
         // Add views
@@ -75,7 +87,7 @@ class Controller_administration {
         $this->page = new Page("Administration");
 
         // Add datas from the model
-        $data = (object) array();
+        $data = (object)array();
         $data->activites = $this->DB->listActivites();
 
         // Add views
@@ -95,7 +107,7 @@ class Controller_administration {
         $this->page = new Page("Administration");
 
         // Add datas from the model
-        $data = (object) array();
+        $data = (object)array();
         $data->users = $this->DB->listUsers();
 
         // Add views
@@ -108,5 +120,5 @@ class Controller_administration {
         // Render everything together and display it !
         $this->page->render($data);
     }
-    
+
 }
