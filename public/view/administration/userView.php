@@ -21,7 +21,7 @@ $users = $data->users;
         <?php
         foreach ($users as $user) {
             echo "<tr>";
-            HtmlTools::addRowInTable($user['username'], $user['idUser'], "user");
+            HtmlTools::addRowInTable($user['username'], $user['id'], "user");
             echo "</tr>";
         }
         ?>

@@ -1,115 +1,73 @@
 <?php
-class DB {
-    private $host = "localhost";
-    private $username = "m151";
-    private $password = "12345";
-    private $DB_name = "journeesportive";
-    
-    public $bdd;
-    
-    function __construct() 
+require_once "./model/MasterModel.php";
+class DB extends MasterModel
+{
+    function getActivite($id)
     {
-        try {
-            $bdd = new PDO("mysql:host={$this->host};dbname={$this->DB_name};charset=utf8", $this->username, $this->password);
-            $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->bdd = $bdd;
-            //echo "Connected successfully";
-        } catch (PDOException $e) {
-            echo 'Connection failed : ' . $e->getMessage();
-        }
+        return $this->selectElementById("activite", $id);
     }
     
-    function getActivite($id){
-        $reponse = $this->bdd->prepare('SELECT * FROM activite WHERE idActivite = (:id)');
-        $reponse->bindParam('id', $id);
-        try{
-            $reponse->execute();
-        } catch (Exception $e){
-            echo $e;
-        }
-
-        $activite = $reponse->fetch(PDO::FETCH_ASSOC);
-    
-        return $activite;
-    }
-    
-    function getClasse($id){
-        $reponse = $this->bdd->prepare('SELECT * FROM classe WHERE idClasse = (:id)');
-        $reponse->bindParam('id', $id);
-        $reponse->execute();
-        
-        $classe = $reponse->fetch(PDO::FETCH_ASSOC);
-    
-        return $classe;
+    function getClasse($id)
+    {
+        return $this->selectElementById("classe", $id);
     }
     
     function listActivites()
     {    
-        $reponse = $this->bdd->prepare('SELECT * FROM activite');
-        $reponse->execute();
-        
-        $activites = $reponse->fetchAll(PDO::FETCH_ASSOC);
-    
-        return $activites;
+        return $this->listElements("activite");
     }
     
     function  listClasses()
     {    
-        $reponse = $this->bdd->prepare('SELECT * FROM classe');
-        $reponse->execute();
-        
-        $classes = $reponse->fetchAll(PDO::FETCH_ASSOC);
-    
-        return $classes;
+        return $this->listElements("classe");
     }
     
     function  listUsers()
-    {    
-        $reponse = $this->bdd->prepare('SELECT * FROM users');
-        $reponse->execute();
-        
-        $users = $reponse->fetchAll(PDO::FETCH_ASSOC);
-    
-        return $users;
-    }
-    
-    function add($data, $type)
     {
-        if($type == 'classe'){
-            $req = $this->bdd->prepare("INSERT INTO classe (nomClasse) VALUES (:nom)");
+        return $this->listElements("users");
+    }
+
+    function addActivite($data)
+    {
+        $datas = array(
+            "nomActivite" => $data['nomElement']
+        );
+        $insertId = $this->insert($datas, "activite");
+        if(is_numeric($insertId)){
+            return array("id" => $insertId, "data" => $data['nomElement'], "type" => "activite");
         } else {
-            $req = $this->bdd->prepare("INSERT INTO activite (nomActivite) VALUES (:nom)");
-        }
-        
-        $req->bindParam(':nom', $data['nomElement']);
-        
-        try{
-            $req->execute();
-            //$_SESSION['message'] = "La $type a été ajoutée avec succès !";
-            return array("id" => $this->bdd->lastInsertId(), "data" => $data['nomElement'], "type" => $type);
-        } catch (Exception $ex) {
-            //$_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
-            return array("error" => "error: db $ex");
+            return array("error" => "error: db $insertId");
         }
     }
-    
+
+    function addClasse($data)
+    {
+        $datas = array(
+            "nomClasse" => $data['nomElement']
+        );
+        $insertId = $this->insert($datas, "classe");
+        if(is_numeric($insertId)){
+            return array("id" => $insertId, "data" => $data['nomElement'], "type" => "classe");
+        } else {
+            return array("error" => "error: db $insertId");
+        }
+    }
+
     function addUser($username, $password)
     {
-        $req = $this->bdd->prepare("INSERT INTO users (username, password) VALUE (:username, :password)");
-        $req->bindParam(':username', $username);
-        $req->bindParam(':password', $password);
-        
-        try{
-            $req->execute();
-            //$_SESSION['message'] = "La $type a été ajoutée avec succès !";
-            return array("id" => $this->bdd->lastInsertId(), "username" => $username, "password" => $password, "type" => "user");
-        } catch (Exception $ex) {
-            //$_SESSION['error'] = "Une erreur s'est produite lors de l'ajout de la $type ($ex)";
-            return array("error" => "error: db $ex");
+        $datas = array(
+            "username" => $username,
+            "password" => $password
+        );
+        $insertId = $this->insert($datas, "users");
+        if(is_numeric($insertId)){
+            return array("id" => $insertId, "username" => $username, "password" => $password, "type" => "user");
+        } else {
+            return array("error" => "error: db $insertId");
         }
     }
     
-    function update($type, $data)
+    /*function _update($type, $data)
     {
        
         if($type=="classe"){
@@ -127,9 +85,57 @@ class DB {
         } catch (Exception $ex) {
             return array("error" => "Une erreur s'est produite lors de la modification de la $type ($ex)");
         }
+    }*/
+
+    function updateActivite($data)
+    {
+        $id = $data['id'];
+        unset($data['id']);
+        $returnArray = $this->update($data, 'activite', $id);
+        if($returnArray[0]){
+            return array("message" => "L'activité a été modifiée avec succès !");
+        } else {
+            return array("error" => "Une erreur s'est produite lors de la modification de l'activité ($returnArray[1])");
+        }
+    }
+
+    function updateClasse($data)
+    {
+        $id = $data['id'];
+        unset($data['id']);
+        $returnArray = $this->update($data, 'classe', $id);
+        if($returnArray[0]){
+            return array("message" => "La classe a été modifiée avec succès !");
+        } else {
+            return array("error" => "Une erreur s'est produite lors de la modification de la classe ($returnArray[1])");
+        }
+    }
+
+    function removeActivite($id)
+    {
+        $returnArray = $this->delete('activite', $id);
+        if(!$returnArray[0]){
+            if($returnArray[1] == "integrity"){
+                return array("error" => "Vous ne pouvez pas supprimer cette activité. Elle est liée à une inscription.");
+            } else {
+                return array("error" => $returnArray[1]);
+            }
+        }
+    }
+
+    function removeClasse($id)
+    {
+        $returnArray = $this->delete('classe', $id);
+        if(!$returnArray[0]){
+            if($returnArray[1] == "integrity"){
+                return array("error" => "Vous ne pouvez pas supprimer cette classe. Elle est liée à une inscription.");
+            } else {
+                return array("error" => $returnArray[1]);
+            }
+        }
     }
     
-    function remove($id, $type)
+    /*function remove($id, $type)
     {
         if($type=="classe"){
             $req = $this->bdd->prepare("DELETE FROM classe WHERE idClasse = :id");
@@ -152,64 +158,47 @@ class DB {
             }
             
         }
-    }
+    }*/
     
-    function subscribe($name, $firstName, $classe, $choices){
-        
-        $addEleveReq = $this->bdd->prepare("INSERT INTO eleve (nom, prenom, fkClasse) VALUES (:name, :firstName, :classe)");
-        $addEleveReq->bindParam(":name", $name);
-        $addEleveReq->bindParam(":firstName", $firstName);
-        $addEleveReq->bindParam(":classe", $classe);
-        
-        $_SESSION = array();
-        
-        $_SESSION['debug']['params'] = [$name, $firstName, $classe, $choices]; 
-        
-        try {
-            $addEleveReq->execute();
-            //$_SESSION['message']['classe'] = "L'utilisateur a été enregistré";
-        } catch (Exception $exc) {
-            //echo $exc->getTraceAsString();
-            return array("error" => "L'utilisateur n'a pas pu être enregistré" . $exc);
+    function subscribe($name, $firstName, $classe, $choices)
+    {
+        $values = array(
+            "nom" => $name,
+            "prenom" => $firstName,
+            "fkClasse" => $classe
+        );
+        $lastInsertId = $this->insert($values, 'eleve');
+        if(!is_numeric($lastInsertId)){
+            return array("error" => "L'utilisateur n'a pas pu être enregistré ($lastInsertId)");
         }
-        
-        $lastInsertId = $this->bdd->lastInsertId();
-        $_SESSION['debug']['lastInsertId'] = $lastInsertId;        
-        
-        foreach ($choices as $id => $choice)
+        foreach ($choices as $index => $choice)
         {
-            $req = "addChoice" . "$id";
-            
-            $_SESSION['debug']['foreach'] = [$id, $choice]; 
-            
-            $$req = $this->bdd->prepare("INSERT INTO inscrire (fkEleve, fkActivite, ordrePref) VALUES (:eleve, :activite, :ordre)");
-            $$req->bindParam(":eleve", $lastInsertId);
-            $$req->bindParam(":activite", $choice);
-            $$req->bindParam(":ordre", $id);
-            /*
-            try {
-                $$req->execute();
-                $_SESSION['message']["activite$id"] = "L'activité $id a été enregistrée";
-            } catch (Exception $exc) {
-                echo $exc->getTraceAsString();
-                $_SESSION['error']["activite$id"] = "L'activité $id pas enregistré" . $exc;
-            }*/
+            $values = array(
+                "fkEleve" => $lastInsertId,
+                "fkActivite" => $choice,
+                "ordrePref" => $index
+            );
+            $lastInsertId = $this->insert($values, 'inscrire');
+            if (!is_numeric($lastInsertId)) $error = $lastInsertId;
         }
-        try {
-            foreach ($choices as $id => $choice){
-                $req = "addChoice" . "$id";
-                $$req->execute();
-            }
+        if(isset($error)){
+            return array("error" => "$firstName n'a pas pu être inscrit ($error)");
+        } else {
             return array("message" => "$firstName a été inscrit");
-        } catch (Exception $ex) {
-            return array("error" => "$firstName n'a pas pu être inscrit" . $ex);
         }
     }
     
     function checkLogin($username, $password)
     {
-        // Check user and password at once
-        $req = $this->bdd->prepare("SELECT username FROM users WHERE username = (:username) AND password = (:password)");
+        $where = "username = $username AND password = $password";
+        $returnArray = $this->selectWhere('users', $where);
+        if($returnArray[0]){
+            return array("error" => "Votre identifiant ou mot de passe est erronné");
+        } else {
+            return array("username" => $username, "password" => $password);
+        }
+        /* Check user and password at once
+        $req = $this->pdo->prepare("SELECT username FROM users WHERE username = (:username) AND password = (:password)");
         $req->bindParam(":username", $username);
         $req->bindParam(":password", $password);
         try {
@@ -217,6 +206,6 @@ class DB {
             return array("username" => $username, "password" => $password);
         } catch (Exception $ex) {
             return array("error" => "Votre identifiant ou mot de passe est erronné");
-        }
+        }*/
     }
 }

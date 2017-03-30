@@ -1,11 +1,11 @@
 <?php
-$base_url = Config::$site_url;
+$base_url = Config::BASE_URL;
 $loginCss = $base_url . "public/style/login.css";
 $bootstrapJs = $base_url . "public/inc/bootstrap.js";
 $jquery = $base_url . "public/inc/jquery-3.1.1.js";
 $myJquery = $base_url . "public/scripts/jqueryLogin.js";
 
-session_start();
+//session_start();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,8 +34,6 @@ session_start();
               <p><input type="password" id="password" placeholder="Mot de passe"></p>
               <p><input type="button" id="submit" data-url="<?= $_SERVER['REQUEST_URI'] ?>" value="Log in"></p>
             </form>
-
-            <?= $_SERVER['REQUEST_URI']; ?>
         </div>
 
         <script

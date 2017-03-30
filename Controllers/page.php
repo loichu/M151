@@ -1,16 +1,38 @@
 <?php
-
-//require_once './config.php';
+require_once "./model/fonctionsDB.inc.php";
 
 class Page
 {
     private $page_title;
     private $views = array();
-    private $data = array();
+
+    public $Model;
+    public $data;
+    public $needModel = false;
 
     function __construct($title)
     {
+        $this->init();
+
         $this->page_title = $title;
+
+        $this->data = (object) array();
+
+        if($this->needModel){
+            $this->Model = new DB();
+        }
+
+        $this->secure();
+    }
+
+    function init()
+    {
+        // Dummy function
+    }
+
+    function secure()
+    {
+        // Dummy function
     }
 
     function setTitle($title)
@@ -28,12 +50,13 @@ class Page
         $this->data->$$key = $var;
     }
 
-    function render($data)
+    function render()
     {
+        $data = $this->data;
         $data->title = $this->page_title;
 
         foreach ($this->views as $view) {
-            include("./public/view/" . $view);
+            require_once("./public/view/" . $view);
         }
     }
 }

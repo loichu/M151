@@ -8,7 +8,7 @@ $type = $data->type;
 $element = $data->element;
 $id = $data->id;
 $fieldName = "nom" . ucfirst($type);
-$jquery = Config::$site_url . "public/scripts/jqueryUpdate.js";
+$jquery = Config::BASE_URL . "public/scripts/jqueryUpdate.js";
 ?>
 <div class="text-center">
     <div class="col-md-12">

@@ -1,5 +1,5 @@
 <?php
-$base_url = Config::$site_url;
+$base_url = Config::BASE_URL;
 
 $bootstrapCss = $base_url . "public/inc/bootstrap.css";
 $bootstrapJs = $base_url . "public/inc/bootstrap.js";
@@ -16,7 +16,7 @@ $adminUserTab = $base_url . "administration/user";
 $uri = $_SERVER["REQUEST_URI"];
 $uriArray = explode('/', $uri);
 $controller = $uriArray[1];
-$method = $uriArray[2];
+$method = isset($uriArray[2]) ? $uriArray[2] : "";
 ?>
 <!DOCTYPE html>
 <html lang="fr">

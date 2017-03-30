@@ -8,7 +8,7 @@ $activites = $data->activites;
         <?php
         foreach ($activites as $activite) {
             echo "<tr>";
-            HtmlTools::addRowInTable($activite['nomActivite'], $activite['idActivite'], "activite");
+            HtmlTools::addRowInTable($activite['nomActivite'], $activite['id'], "activite");
             echo "</tr>";
         }
         ?>

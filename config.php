@@ -2,14 +2,22 @@
 /**
  * configuration class
 **/
-class Config {
-    public static $debug = false;
-    public static $site_url = "http://dev.journeesportive.ch/";
-    public static $allowed_controller = array("default", "administration", "api", "inscription", "update", "welcome");
-}
-// $c = (object) array();
-// $c->d = false ;
-// $c->site_url = "http://127.0.0.1/M151" ;
-// $c->allowed_controller = array("default", "administration", "api", "inscription", "update") ;
+class Config
+{
+    const DEBUG = false;
 
- ?>
+    const BASE_URL = "http://dev.journeesportive.ch/";
+
+    const NO_VHOST = array(
+        "activated" => false,
+        "urlSub" => 1
+    );
+
+    const PDO_CONFIG = array(
+        "host" => "localhost",
+        "user" => "m151",
+        "password" => "12345",
+        "schema" => "journeesportive"
+    );
+}
+?>

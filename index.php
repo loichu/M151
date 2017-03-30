@@ -4,7 +4,12 @@
  * Every page is loaded from here.
  */
 
-// First we need to do some imports
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// First we need import a few things
 require_once("./config.php"); // This is a class containing usefull static props
 require_once("./funcs.php"); // This file contains usefull functions
 
@@ -12,22 +17,28 @@ require_once("./funcs.php"); // This file contains usefull functions
 $uri = $_SERVER["REQUEST_URI"];
 $uriArray = explode('/', $uri);
 
-// In easy php I use M151 directory: have to cut it
-// array_shift($uriArray);
+// Define some constants
+define("CONTROLLERS_DIR", "./Controllers/");
+
+// If you don't have a virtual host you should use one or many subdirectories
+// after localhost to be able to host more than one site.
+// In the Config class you can precise if it's your case or not and choose the
+// number of subdirectories. (default: off)
+if(Config::NO_VHOST['activated']){
+    array_slice($uriArray, Config::NO_VHOST['urlSub']);
+}
 
 // First arg is controller, second is method, the rest are parameters
 $controller = (isset($uriArray[1])) ? $uriArray[1] : '';
 $method = (isset($uriArray[2])) ? $uriArray[2] : '';
 $params = (isset($uriArray[3])) ? array_slice($uriArray, 3) : '';
-/*$param1 = (isset($uriArray[3])) ? $uriArray[3] : '';
-$param2 = (isset($uriArray[4])) ? $uriArray[4] : '';
-$param3 = (isset($uriArray[5])) ? $uriArray[5] : '';*/
 
 // be sure that the controller is valid before loading it
-if (in_array($controller, Config::$allowed_controller)) {
-    require_once("./controller/"  . $controller . "Ctrl.php");
-    $ctrl_class_name = "Controller_" . $controller;
-    $cont = new $ctrl_class_name();
+if (file_exists(CONTROLLERS_DIR . $controller . "Ctrl.php"))
+{
+    require_once("./Controllers/"  . $controller . "Ctrl.php");
+    $ctrl_class_name = ucfirst($controller) . "Ctrl";
+    $cont = new $ctrl_class_name(ucfirst($controller));
     if (method_exists($cont, $method)) {
       if (!empty($params)) {
         $cont->$method($params);
@@ -41,7 +52,7 @@ if (in_array($controller, Config::$allowed_controller)) {
 } else if(empty($controller)) {
     header("location:welcome");
 } else {
-    require_once "./controller/page.php";
+    require_once "./Controllers/page.php";
     $page = new Page("Error 404");
     $page->addView("partial/header.php");
     $page->addView("404.php");
@@ -50,7 +61,7 @@ if (in_array($controller, Config::$allowed_controller)) {
     $page->render($data);
 }
 
-if (Config::$debug) {
+if (Config::DEBUG) {
   print "<br /><br /><br />--- debug -----<pre>";
   print_r($params);
   print "</pre>";

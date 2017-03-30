@@ -4,26 +4,26 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE TABLE IF NOT EXISTS eleve
 (
-    idEleve INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     nom VARCHAR(50),
     prenom VARCHAR(50),
     fkClasse INT NOT NULL,
-    PRIMARY KEY (idEleve),
-    CONSTRAINT fkEleveClasse FOREIGN KEY (fkClasse) REFERENCES classe(idClasse)
+    PRIMARY KEY (id),
+    CONSTRAINT fkEleveClasse FOREIGN KEY (fkClasse) REFERENCES classe(id)
 );
 
 CREATE TABLE IF NOT EXISTS activite
 (
-    idActivite INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     nomActivite VARCHAR(50),
-    PRIMARY KEY (idActivite)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS classe
 (
-    idClasse INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     nomClasse VARCHAR(50),
-    PRIMARY KEY (idClasse)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS inscrire
@@ -32,17 +32,17 @@ CREATE TABLE IF NOT EXISTS inscrire
     fkActivite INT NOT NULL,
     ordrePref INT NOT NULL,
     CONSTRAINT fkEleveInscrire FOREIGN KEY (fkEleve)
-        REFERENCES eleve(idEleve),
+        REFERENCES eleve(id),
     CONSTRAINT fkActiviteInscrire FOREIGN KEY (fkActivite)
-        REFERENCES activite(idActivite)
+        REFERENCES activite(id)
 );
 
 CREATE TABLE IF NOT EXISTS users
 (
-    idUser INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(25),
     password VARCHAR(50),
-    PRIMARY KEY (idUser)
+    PRIMARY KEY (id)
 );
 
 SET FOREIGN_KEY_CHECKS = 1;

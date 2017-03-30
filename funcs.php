@@ -27,4 +27,6 @@ function getMethod($uri)
     
     return $uriArray[2];
 }
+
+
 ?>

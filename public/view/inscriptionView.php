@@ -9,7 +9,7 @@ require_once './public/helpers/phpToHtml.inc.php';
 
 $activites = $data->activites;
 $classes = $data->classes;
-$jquery = Config::$site_url . "public/scripts/jqueryInscription.js";
+$jquery = Config::BASE_URL . "public/scripts/jqueryInscription.js";
 
 if(!empty($_SESSION['error']['identical records'])){
     echo $_SESSION['error']['identical records'];

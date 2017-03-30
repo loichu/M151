@@ -1,8 +1,8 @@
 <?php
-$script = Config::$site_url . "public/scripts/jqueryAdministration.js";
-$scriptUser = Config::$site_url . "public/scripts/jqueryAddUser.js";
+$script = Config::BASE_URL . "public/scripts/jqueryAdministration.js";
+$scriptUser = Config::BASE_URL . "public/scripts/jqueryAddUser.js";
 
-if(Config::$debug){
+if(Config::DEBUG){
     if(isset($activites)){
         debug($activites);
     }

@@ -7,12 +7,11 @@
  *
  * @author Loïc Humbert
  */
-require_once("./controller/page.php");
 require_once './model/fonctionsDB.inc.php';
 
 session_start();
 
-class Controller_api
+class ApiCtrl
 {
     private $DB;
 
@@ -42,7 +41,8 @@ class Controller_api
         // Check if the field is not empty and exec SQL request in the model.
         if (!empty($_POST['nomElement'])) {
             filter_input(INPUT_POST, 'nomElement', FILTER_SANITIZE_STRING);
-            $datas = $this->DB->add($_POST, $type);
+            //$datas = $this->DB->add($_POST, $type);
+            $datas = $type == "activite" ? $this->DB->addActivite($_POST) : $this->DB->addClasse($_POST);
             echo json_encode($datas);
         } else if ($type != "user") {
             echo json_encode(array("error" => "Vous ne pouvez pas laisser le champ vide"));
@@ -54,7 +54,7 @@ class Controller_api
         if (!empty($_POST['id']) && !empty($_POST['type'])) {
             filter_input(INPUT_POST, "id");
             filter_input(INPUT_POST, "type");
-            $datas = $this->DB->remove($_POST['id'], $_POST['type']);
+            $datas = $_POST['type'] == 'activite' ? $this->DB->removeActivite($_POST['id']) : $this->DB->removeClasse($_POST['id']);
             echo json_encode($datas);
         } else {
             echo json_encode(array("error" => "error input"));
@@ -88,7 +88,7 @@ class Controller_api
 
         if (!empty($_POST['newName'])) {
             filter_input(INPUT_POST, 'newName', FILTER_SANITIZE_STRING);
-            $response = $this->DB->update($type, $_POST);
+            $response = $type == 'activite' ? $this->DB->updateActivite($_POST) : $this->DB->updateClasse($_POST);
             echo json_encode($response);
         } else {
             echo json_encode(array("error" => "Vous ne pouvez pas laisser le champ vide"));

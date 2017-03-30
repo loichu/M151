@@ -18,7 +18,7 @@ $classes = $data->classes;
         <?php
         foreach ($classes as $classe) {
             echo "<tr>";
-            HtmlTools::addRowInTable($classe['nomClasse'], $classe['idClasse'], "classe");
+            HtmlTools::addRowInTable($classe['nomClasse'], $classe['id'], "classe");
             echo "</tr>";
         }
         ?>
