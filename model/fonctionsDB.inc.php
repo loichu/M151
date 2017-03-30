@@ -66,26 +66,6 @@ class DB extends MasterModel
             return array("error" => "error: db $insertId");
         }
     }
-    
-    /*function _update($type, $data)
-    {
-       
-        if($type=="classe"){
-            $req = $this->bdd->prepare("UPDATE classe SET nomClasse = :newName WHERE idClasse = :id");
-        } else {
-            $req = $this->bdd->prepare("UPDATE activite SET nomActivite = :newName WHERE idActivite = :id");
-        }
-        
-        $req->bindParam(':newName', $data['newName']);
-        $req->bindParam(':id', $data['id']);
-        
-        try{
-            $req->execute();
-            return array("message" => "La $type a été modifiée avec succès !");
-        } catch (Exception $ex) {
-            return array("error" => "Une erreur s'est produite lors de la modification de la $type ($ex)");
-        }
-    }*/
 
     function updateActivite($data)
     {
@@ -121,44 +101,21 @@ class DB extends MasterModel
                 return array("error" => $returnArray[1]);
             }
         }
+        return array("message" => "success");
     }
 
     function removeClasse($id)
     {
         $returnArray = $this->delete('classe', $id);
-        if(!$returnArray[0]){
-            if($returnArray[1] == "integrity"){
+        if (!$returnArray[0]) {
+            if ($returnArray[1] == "integrity") {
                 return array("error" => "Vous ne pouvez pas supprimer cette classe. Elle est liée à une inscription.");
             } else {
                 return array("error" => $returnArray[1]);
             }
         }
+        return array("message" => "success");
     }
-    
-    /*function remove($id, $type)
-    {
-        if($type=="classe"){
-            $req = $this->bdd->prepare("DELETE FROM classe WHERE idClasse = :id");
-        } else {
-            $req = $this->bdd->prepare("DELETE FROM activite WHERE idActivite = :id");
-        }
-        
-        $req->bindParam(':id', $id);
-        
-        try{
-            $req->execute();
-            // $_SESSION['message'] = "La $type a été supprimé avec succès !";
-            return array('id' => $id, 'data' => $type);
-        } catch (Exception $ex) {
-            // $_SESSION['error'] = "Une erreur s'est produite lors de la suppression de la $type ($ex)";
-            if($ex->getCode() == 23000){
-                return array("error" => "You can't remove this. It's linked to another element.");
-            } else {
-                return array("error" => "Something went wrong");
-            }
-            
-        }
-    }*/
     
     function subscribe($name, $firstName, $classe, $choices)
     {
@@ -167,23 +124,26 @@ class DB extends MasterModel
             "prenom" => $firstName,
             "fkClasse" => $classe
         );
-        $lastInsertId = $this->insert($values, 'eleve');
-        if(!is_numeric($lastInsertId)){
-            return array("error" => "L'utilisateur n'a pas pu être enregistré ($lastInsertId)");
+        $this->pdo->beginTransaction();
+        $lastInsertIdEleve = $this->insert($values, 'eleve');
+        if(!is_numeric($lastInsertIdEleve)){
+            return array("error" => "L'utilisateur n'a pas pu être enregistré ($lastInsertIdEleve)");
         }
         foreach ($choices as $index => $choice)
         {
             $values = array(
-                "fkEleve" => $lastInsertId,
+                "fkEleve" => $lastInsertIdEleve,
                 "fkActivite" => $choice,
                 "ordrePref" => $index
             );
-            $lastInsertId = $this->insert($values, 'inscrire');
-            if (!is_numeric($lastInsertId)) $error = $lastInsertId;
+            $lastInsertIdChoice = $this->insert($values, 'inscrire');
+            if (!is_numeric($lastInsertIdChoice)) $error = $lastInsertIdChoice;
         }
         if(isset($error)){
+            $this->pdo->rollBack();
             return array("error" => "$firstName n'a pas pu être inscrit ($error)");
         } else {
+            $this->pdo->commit();
             return array("message" => "$firstName a été inscrit");
         }
     }
@@ -197,15 +157,5 @@ class DB extends MasterModel
         } else {
             return array("username" => $username, "password" => $password);
         }
-        /* Check user and password at once
-        $req = $this->pdo->prepare("SELECT username FROM users WHERE username = (:username) AND password = (:password)");
-        $req->bindParam(":username", $username);
-        $req->bindParam(":password", $password);
-        try {
-            $req->execute();
-            return array("username" => $username, "password" => $password);
-        } catch (Exception $ex) {
-            return array("error" => "Votre identifiant ou mot de passe est erronné");
-        }*/
     }
 }

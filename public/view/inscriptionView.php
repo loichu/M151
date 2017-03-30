@@ -10,17 +10,6 @@ require_once './public/helpers/phpToHtml.inc.php';
 $activites = $data->activites;
 $classes = $data->classes;
 $jquery = Config::BASE_URL . "public/scripts/jqueryInscription.js";
-
-if(!empty($_SESSION['error']['identical records'])){
-    echo $_SESSION['error']['identical records'];
-    unset($_SESSION['error']['identical records']);
-}
-
-if(!empty($_SESSION['error']['no name'])){
-    echo $_SESSION['error']['no name'];
-    unset($_SESSION['error']['no name']);
-}
-    
     
 ?>
 
