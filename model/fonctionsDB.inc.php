@@ -11,6 +11,11 @@ class DB extends MasterModel
     {
         return $this->selectElementById("classe", $id);
     }
+
+    function getUser($id)
+    {
+        return $this->selectElementById("users", $id);
+    }
     
     function listActivites()
     {    
@@ -91,6 +96,19 @@ class DB extends MasterModel
         }
     }
 
+    function updateUser($data)
+    {
+        $id = $data['id'];
+        unset($data['id']);
+        $data['password'] = sha1($data['password']);
+        $returnArray = $this->update($data, 'users', $id);
+        if($returnArray[0]){
+            return array("message" => "L'utilisateur a été modifiée avec succès !");
+        } else {
+            return array("error" => "Une erreur s'est produite lors de la modification de l'utilisateur ($returnArray[1])");
+        }
+    }
+
     function removeActivite($id)
     {
         $returnArray = $this->delete('activite', $id);
@@ -110,6 +128,19 @@ class DB extends MasterModel
         if (!$returnArray[0]) {
             if ($returnArray[1] == "integrity") {
                 return array("error" => "Vous ne pouvez pas supprimer cette classe. Elle est liée à une inscription.");
+            } else {
+                return array("error" => $returnArray[1]);
+            }
+        }
+        return array("message" => "success");
+    }
+
+    function removeUser($id)
+    {
+        $returnArray = $this->delete('users', $id);
+        if (!$returnArray[0]) {
+            if ($returnArray[1] == "integrity") {
+                return array("error" => "Vous ne pouvez pas supprimer cet utilisateur.");
             } else {
                 return array("error" => $returnArray[1]);
             }
@@ -150,9 +181,11 @@ class DB extends MasterModel
     
     function checkLogin($username, $password)
     {
-        $where = "username = $username AND password = $password";
-        $returnArray = $this->selectWhere('users', $where);
-        if($returnArray[0]){
+        $values = array($username, $password);
+        $where = "username = ? AND password = ?";
+        $returnArray = $this->selectWhere('users', $where, $values);
+        //return $returnArray;
+        if(!$returnArray[0]){
             return array("error" => "Votre identifiant ou mot de passe est erronné");
         } else {
             return array("username" => $username, "password" => $password);

@@ -40,8 +40,8 @@ $("#tableClasse, #tableActivite").on('click', 'a.rmElement', function (e) {
 
     $.ajax({
         method: "POST",
-        url: "/api/remove",
-        data: {id: id, type: type}
+        url: "/api/remove/" + type,
+        data: {id: id}
     })
     .done(function (returnedDatas) {
         var myData = JSON.parse(returnedDatas);

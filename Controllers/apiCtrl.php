@@ -49,12 +49,19 @@ class ApiCtrl
         }
     }
 
-    function remove()
+    function remove($param)
     {
-        if (!empty($_POST['id']) && !empty($_POST['type'])) {
+        $type = $param[0];
+
+        if (!empty($_POST['id'])) {
             filter_input(INPUT_POST, "id");
-            filter_input(INPUT_POST, "type");
-            $datas = $_POST['type'] == 'activite' ? $this->DB->removeActivite($_POST['id']) : $this->DB->removeClasse($_POST['id']);
+            if($type == 'activite'){
+                $datas = $this->DB->removeActivite($_POST['id']);
+            } else if($type == 'classe'){
+                $datas = $this->DB->removeClasse($_POST['id']);
+            } else if($type == 'user'){
+                $datas = $this->DB->removeUser($_POST['id']);
+            }
             echo json_encode($datas);
         } else {
             echo json_encode(array("error" => "error input"));
@@ -86,6 +93,19 @@ class ApiCtrl
     {
         $type = $param[0];
 
+        if($type == "user"){
+            $exUserDatas = $this->DB->getUser($_POST['id']);
+            $checklogin = $this->DB->checkLogin($exUserDatas['username'], sha1($_POST['exPswd']));
+            if(!isset($checklogin['error'])){
+                unset($_POST['exPswd']);
+                $response = $this->DB->updateUser($_POST);
+                echo json_encode($response);
+            } else {
+                echo json_encode(array("error" => "Votre ancien mot de passe est incorrect"));
+            }
+            die();
+        }
+
         if (!empty($_POST['newName'])) {
             filter_input(INPUT_POST, 'newName', FILTER_SANITIZE_STRING);
             $response = $type == 'activite' ? $this->DB->updateActivite($_POST) : $this->DB->updateClasse($_POST);
@@ -103,6 +123,7 @@ class ApiCtrl
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
             $password = sha1($_POST['password']);
             $response = $this->DB->checkLogin($username, $password);
+            //echo($response);
             if(!isset($response['error'])){
                 $_SESSION['username'] = $response['username'];
                 $_SESSION['password'] = $response['password'];

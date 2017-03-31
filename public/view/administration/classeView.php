@@ -5,7 +5,7 @@ $classes = $data->classes;
 <div class="col-md-12" style="text-align: center">
     <h2>Insérer une nouvelle classe</h2>
 
-    <div id="formClasse" class="col-md-3 col-lg-3">
+    <div id="formClasse" class="col-md-3 col-lg-3 formAjax">
         <input type="text" name="nomClasse" id="nomClasse" placeholder="Nom de la classe"/>
         <a href="#" class="btn btn-primary submitElement" data-type="classe" data-table="tableClasse"
            data-field="nomClasse">Ajouter

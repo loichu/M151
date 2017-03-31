@@ -12,15 +12,15 @@ require_once("page.php");
 //$type = $_GET['type'];
 //$id = $_GET['id'];
 
-class UpdateCtrl extends Page{
-    
-    //private $DB;
-    
-    function init() {
+class UpdateCtrl extends Page
+{
+    function init()
+    {
         $this->needModel = true;
     }
     
-    function classe($param){
+    function classe($param)
+    {
         //$this->page = new Page("Update");
 
         $id = $param[0];
@@ -37,7 +37,8 @@ class UpdateCtrl extends Page{
         $this->render();
     }
     
-    function activite($param){
+    function activite($param)
+    {
         //$this->page = new Page("Update");
 
         $id = $param[0];
@@ -53,5 +54,18 @@ class UpdateCtrl extends Page{
         
         $this->render();
     }
-    
+
+    function user($param)
+    {
+        $id = $param[0];
+
+        $this->data->id = $id;
+        $this->data->user = $this->Model->getUser($id);
+
+        $this->addView("partial/header.php");
+        $this->addView("updateUserView.php");
+        $this->addView("partial/footer.php");
+
+        $this->render();
+    }
 }

@@ -35,12 +35,6 @@ class MasterModel
         return implode(', ', $result);
     }
 
-    /*private function placeholderSelectWhere($whereArray)
-    {
-        $result = array();
-        foreach ()
-    }*/
-
     function selectElementById($table, $id)
     {
         $query = "SELECT * FROM $table WHERE id = $id";
@@ -121,16 +115,17 @@ class MasterModel
         return array(true);
     }
 
-    function selectWhere($table, $where)
+    function selectWhere($table, $where, $values)
     {
-        $query = "SELECT FROM $table WHERE $where";
+        $query = "SELECT * FROM $table WHERE $where";
         $response = $this->pdo->prepare($query);
         try {
-            $response->execute();
+            $response->execute($values);
         } catch(Exception $e) {
             return array(false, $e);
         }
-        return array(true, $response);
+        $response = $response->fetch(PDO::FETCH_LAZY);
+        return $response;
     }
 
 }

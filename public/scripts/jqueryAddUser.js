@@ -31,17 +31,16 @@ $("#formUser").on('click', '#createUser', function () {
     return false;
 });
 
-$("#tableClasse, #tableActivite").on('click', 'a.rmElement', function (e) {
+$("#tableUser").on('click', 'a.rmElement', function (e) {
     console.log("delete clicked");
     //e.preventDefault();
     var closestTr = $(this).closest("tr");
     var id = $(this).data('id');
-    var type = $(this).data('type');
 
     $.ajax({
         method: "POST",
-        url: "/api/remove",
-        data: {id: id, type: type}
+        url: "/api/remove/user",
+        data: {id: id}
     })
     .done(function (returnedDatas) {
         var myData = JSON.parse(returnedDatas);
