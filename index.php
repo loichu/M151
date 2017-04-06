@@ -24,7 +24,7 @@ define("CONTROLLERS_DIR", "./Controllers/");
 // after localhost to be able to host more than one site.
 // In the Config class you can precise if it's your case or not and choose the
 // number of subdirectories. (default: off)
-if(Config::NO_VHOST['activated']){
+if (Config::NO_VHOST['activated']) {
     array_slice($uriArray, Config::NO_VHOST['urlSub']);
 }
 
@@ -34,22 +34,21 @@ $method = (isset($uriArray[2])) ? $uriArray[2] : '';
 $params = (isset($uriArray[3])) ? array_slice($uriArray, 3) : '';
 
 // be sure that the controller is valid before loading it
-if (file_exists(CONTROLLERS_DIR . $controller . "Ctrl.php"))
-{
-    require_once("./Controllers/"  . $controller . "Ctrl.php");
+if (file_exists(CONTROLLERS_DIR . $controller . "Ctrl.php")) {
+    require_once("./Controllers/" . $controller . "Ctrl.php");
     $ctrl_class_name = ucfirst($controller) . "Ctrl";
     $cont = new $ctrl_class_name(ucfirst($controller));
     if (method_exists($cont, $method)) {
-      if (!empty($params)) {
-        $cont->$method($params);
-      } else {
-        $cont->$method();
-      }
-  } else {
-      // fallback to the default method
-      $cont->index();
-  }
-} else if(empty($controller)) {
+        if (!empty($params)) {
+            $cont->$method($params);
+        } else {
+            $cont->$method();
+        }
+    } else {
+        // fallback to the default method
+        $cont->index();
+    }
+} else if (empty($controller)) {
     header("location:welcome");
 } else {
     require_once "./Controllers/page.php";
@@ -57,14 +56,14 @@ if (file_exists(CONTROLLERS_DIR . $controller . "Ctrl.php"))
     $page->addView("partial/header.php");
     $page->addView("404.php");
     $page->addView("partial/footer.php");
-    $data = (object) array();
+    $data = (object)array();
     $page->render($data);
 }
 
 if (Config::DEBUG) {
-  print "<br /><br /><br />--- debug -----<pre>";
-  print_r($params);
-  print "</pre>";
+    print "<br /><br /><br />--- debug -----<pre>";
+    print_r($params);
+    print "</pre>";
 }
 
 ?>
